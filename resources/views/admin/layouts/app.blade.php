@@ -4,6 +4,13 @@
 	<meta charset="UTF=8">
 	<title>Albertine Admin</title>
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+	<style>
+		.btn-spacing{
+			margin-right: 5px;
+		}
+	</style>
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -23,7 +30,7 @@
 
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{Auth::user()->name}} <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
 							<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -35,6 +42,10 @@
 			</div>
 		</div>
 	</nav>
+
+	{{ Str::words('aa.bb.cc',1,'.')}}
+
+	{{ Route::current()->getName() }}
 
 	<div class="container">
 		<div class="row">
