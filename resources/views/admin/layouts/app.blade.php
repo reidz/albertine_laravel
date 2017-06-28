@@ -21,10 +21,10 @@
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li class="{{ Request::is('admin/category', 'admin/category/*') ? 'active' : '' }}"><a href="#">Category <span class="sr-only">(current)</span></a></li>
+					<li class="{{ Request::is('admin/category', 'admin/category/*') ? 'active' : '' }}"><a href="{{route('category.index')}}">Category <span class="sr-only">(current)</span></a></li>
 					<li class="{{ Request::is('admin/colour', 'admin/colour/*') ? 'active' : '' }}"><a href="#">Colour</a></li>
 					<li class="{{ Request::is('admin/product', 'admin/product/*') ? 'active' : '' }}"><a href="#">Product</a></li>
-					<li class="{{ Request::is('admin/size', 'admin/size/*') ? 'active' : '' }}"><a href="#">Size</a></li>
+					<li class="{{ Request::is('admin/size', 'admin/size/*') ? 'active' : '' }}"><a href="{{route('size.index')}}">Size</a></li>
 					<li class="{{ Request::is('admin/purchase', 'admin/purchase/*') ? 'active' : '' }}"><a href="#">Purchase</a></li>
 				</ul>
 

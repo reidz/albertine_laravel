@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
-    private $isActiveOptions = [1 => "Active", 0 => "Inactive",]; 
+    private $isActiveOptions = [1 => 'Active', 0 => 'Inactive',]; 
 
     public function __construct()
     {
@@ -24,7 +24,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('admin.category.home' , compact('categories'));
+        return view('admin.category.index' , compact('categories'));
     }
 
     /**
@@ -35,7 +35,7 @@ class CategoryController extends Controller
     public function create()
     {
         $page = (object) [
-            'title' => 'Create Category'
+            'title' => 'Category New'
         ];
         $isActiveOptions = $this->isActiveOptions;
         return view('admin.category.create', compact('page', 'isActiveOptions'));
@@ -120,10 +120,6 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::find($id);
-        
-        $category->updated_by = Auth::user()->email;
-        $category->save();
-        return 'Delete';
+        abort(404, 'Not implemented');
     }
 }

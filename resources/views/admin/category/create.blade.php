@@ -10,7 +10,7 @@
 			<h1>{{$page->title}}</h1>
 		</div>
 		<div class="pull-right">
-			<a href="/admin/category" class="btn btn-info">Back</a>
+			<a href="{{route('category.index')}}" class="btn btn-info">Back</a>
 		</div>
 	</div>
 	
@@ -20,17 +20,22 @@
 		@show
 		<fieldset>
 			<div class="form-group row">
-				<label for="inputEmail" class="col-md-1 control-label">Name</label>
+				<label class="col-md-1 control-label">Name</label>
 				<div class="col-md-2">
 					<input type="text" class="form-control" name="name" id="name" value="@yield('editName')">
 				</div>
 			</div>
 			<div class="form-group row">
-				<label for="inputEmail" class="col-md-1 control-label">Is active</label>
+				<label class="col-md-1 control-label">Is active</label>
 				<div class="col-md-2">
 					<select class="form-control" id="is_active" name="is_active">
 						@foreach($isActiveOptions as $key => $value)
-						<option value="{{$key}}">{{$value}}</option>
+						<option value="{{$key}}" 
+							@if(isset($category->is_active))
+								{{ ($key === $category->is_active) ? 'selected' : '' }}
+							@endif>
+							{{$value}}
+						</option>
 						@endforeach
 					</select>
 				</div>

@@ -25,6 +25,7 @@ Route::POST('admin-password/reset','Admin\ResetPasswordController@reset');
 Route::GET('admin-password/reset/{token}', 'Admin\ResetPasswordController@showResetForm')->name('admin.password.reset');
 
 Route::resource('admin/category', 'Admin\CategoryController');
+Route::resource('admin/size', 'Admin\SizeController');
 
 Auth::routes();
 
