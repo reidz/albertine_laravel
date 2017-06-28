@@ -21,11 +21,11 @@
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Category <span class="sr-only">(current)</span></a></li>
-					<li><a href="#">Colour</a></li>
-					<li><a href="#">Product</a></li>
-					<li><a href="#">Size</a></li>
-					<li><a href="#">Purchase</a></li>
+					<li class="{{ Request::is('admin/category', 'admin/category/*') ? 'active' : '' }}"><a href="#">Category <span class="sr-only">(current)</span></a></li>
+					<li class="{{ Request::is('admin/colour', 'admin/colour/*') ? 'active' : '' }}"><a href="#">Colour</a></li>
+					<li class="{{ Request::is('admin/product', 'admin/product/*') ? 'active' : '' }}"><a href="#">Product</a></li>
+					<li class="{{ Request::is('admin/size', 'admin/size/*') ? 'active' : '' }}"><a href="#">Size</a></li>
+					<li class="{{ Request::is('admin/purchase', 'admin/purchase/*') ? 'active' : '' }}"><a href="#">Purchase</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
@@ -42,10 +42,6 @@
 			</div>
 		</div>
 	</nav>
-
-	{{ Str::words('aa.bb.cc',1,'.')}}
-
-	{{ Route::current()->getName() }}
 
 	<div class="container">
 		<div class="row">
