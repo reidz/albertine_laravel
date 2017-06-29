@@ -103,6 +103,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'size_value' => [
+            'unique' => 'Size metric and value already been taken',
+        ],
     ],
 
     /*
