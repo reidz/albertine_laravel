@@ -27,6 +27,7 @@ Route::GET('admin-password/reset/{token}', 'Admin\ResetPasswordController@showRe
 Route::resource('admin/category', 'Admin\CategoryController');
 Route::resource('admin/size', 'Admin\SizeController');
 Route::resource('admin/colour', 'Admin\ColourController');
+Route::resource('admin/product', 'Admin\ProductController');
 
 Auth::routes();
 

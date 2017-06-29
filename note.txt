@@ -1,0 +1,10 @@
+Domain: rickosusanto.com
+
+Cpanel	 : http://www.rickosusanto.com/cpanel
+Username : k1843106
+Password : aCu6u94m0C
+
+Mysql
+Schema	: k1843106_albertine_laravel
+Username: k1843106_admin
+Password: P@ssw0rd1
