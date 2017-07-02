@@ -28,6 +28,7 @@ Route::resource('admin/category', 'Admin\CategoryController');
 Route::resource('admin/size', 'Admin\SizeController');
 Route::resource('admin/colour', 'Admin\ColourController');
 Route::resource('admin/product', 'Admin\ProductController');
+Route::resource('admin/asset', 'Admin\AssetController');
 
 Auth::routes();
 

@@ -1,8 +1,11 @@
-@extends('admin.category.create')
+@extends('admin.product.create')
 
-@section('editName', $category->name)
-@section('editIsActive', $category->is_active)
-@section('editId', $category->id)
+@section('editCurrency', $product->currency)
+@section('editAmount', $product->amount)
+@section('editStatus', $product->status)
+@section('editType', $product->type)
+@section('editCategory', $product->category)
+@section('editId', $product->id)
 
 @section('editMethod')
 {{method_field('PUT')}}

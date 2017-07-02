@@ -22,7 +22,7 @@
 			<div class="form-group row">
 				<label class="col-md-1 control-label">Name</label>
 				<div class="col-md-2">
-					<input type="text" class="form-control" name="name" id="name" value="@yield('editName')">
+					<input type="text" class="form-control" name="name" id="name" value="{{$colour->name or old('name')}}">
 				</div>
 			</div>
 			<button type="submit" class="btn btn-primary">Submit</button>

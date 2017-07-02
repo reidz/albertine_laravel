@@ -37,7 +37,7 @@
 			<div class="form-group row">
 				<label class="col-md-2 control-label">Size Value</label>
 				<div class="col-md-2">					
-					<input type="text" class="form-control" name="size_value" id="size_value" value="@yield('editSizeValue')">
+					<input type="text" class="form-control" name="size_value" id="size_value" value="{{$size->size_value or old('size_value')}}">
 				</div>
 			</div>
 			<button type="submit" class="btn btn-primary">Submit</button>

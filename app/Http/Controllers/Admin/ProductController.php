@@ -5,10 +5,17 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Product;
+use App\Category;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
+    // private $categoryOptions = ['EU'=>'EU', 'US'=>'US', 'UK' => 'UK,AU,NZ','JP' => 'JP',]; 
+    private $typeOptions = ['SHOES'=>'SHOES', 'UPSELL'=>'UPSELL',];
+    private $currencyOptions = ['IDR'=>'IDR'];
+    private $statusOptions = ['READY_STOCK'=>'READY_STOCK', 'OUT_OF_STOCK'=>'OUT_OF_STOCK', 'INACTIVE' => 'INACTIVE',];
+
+
     public function __construct()
     {
         $this->middleware('auth:admin');
@@ -35,7 +42,17 @@ class ProductController extends Controller
         $page = (object) [
             'title' => 'Product New'
         ];
-        return view('admin.product.create', compact('page'));
+        $categories = Category::getByIsActive(true);
+
+        $categoryOptions = [];
+        foreach ($categories as $category) {
+            $categoryOptions[$category->id] = $category->name;
+        }
+        $typeOptions = $this->typeOptions;
+        $currencyOptions = $this->currencyOptions;
+        $statusOptions = $this->statusOptions;
+        return view('admin.product.create', compact('page', 'categoryOptions', 
+                                                    'typeOptions', 'currencyOptions', 'statusOptions'));
     }
 
     /**
