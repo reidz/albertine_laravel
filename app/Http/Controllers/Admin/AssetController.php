@@ -50,15 +50,17 @@ class AssetController extends Controller
     public function store(Request $request)
     {
         if ($request->file('image')->isValid()){
-
+            // store original size with hashed name
             $imagePath = $request->file('image')->store('public');
+            $imageName = explode('/',$imagePath)[1];
 
+            // create and store thumbnail file
             $thumbnail = Image::make(Storage::get($imagePath))->resize(200,150)->encode();
-
-            $fileName = explode('/',$imagePath)[1];
-            $fileName = explode('.',$imagePath)[0];
-            $fileExtension = explode('.',$imagePath)[1];
-            $thumbnailPath = Storage::put($fileName.'-extension.'.$fileExtension, $thumbnail);
+            $thumbnailName = explode('/',$imagePath)[1];
+            $thumbnailName = explode('.',$imagePath)[0];
+            $thumbnailExtension = explode('.',$imagePath)[1];
+            $thumbnailName = $thumbnailName.'-th.'.$thumbnailExtension;
+            $thumbnailPath = Storage::put($thumbnailName, $thumbnail);
         }
 
 
@@ -73,8 +75,8 @@ class AssetController extends Controller
         // $image_path = null;
 
         // $asset->name = $request->name;
-        // $asset->thumbnail_path = $request->thumbnail_path;
-        // $asset->image_path = $request->image_path;
+        // $asset->thumbnail_path = $thumbnailName;
+        // $asset->image_path = $imageName;
         // $asset->created_by = Auth::user()->email;
         // $asset->updated_by = Auth::user()->email;
         // $insert = $asset->save();
