@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Product;
+use App\Colour;
 use App\Category;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    // private $categoryOptions = ['EU'=>'EU', 'US'=>'US', 'UK' => 'UK,AU,NZ','JP' => 'JP',]; 
     private $typeOptions = ['SHOES'=>'SHOES', 'UPSELL'=>'UPSELL',];
     private $currencyOptions = ['IDR'=>'IDR'];
     private $statusOptions = ['READY_STOCK'=>'READY_STOCK', 'OUT_OF_STOCK'=>'OUT_OF_STOCK', 'INACTIVE' => 'INACTIVE',];
@@ -42,17 +42,24 @@ class ProductController extends Controller
         $page = (object) [
             'title' => 'Product New'
         ];
-        $categories = Category::getByIsActive(true);
+        $categoryOptions = $this->prepareOptions()['categoryOptions'];
+        $typeOptions = $this->typeOptions;
+        $currencyOptions = $this->currencyOptions;
+        $statusOptions = $this->statusOptions;
 
+        return view('admin.product.create', compact('page', 'categoryOptions', 'typeOptions', 
+                                                    'currencyOptions', 'statusOptions'));
+    }
+
+    private function prepareOptions()
+    {
+        $categories = Category::getByIsActive(true);
         $categoryOptions = [];
         foreach ($categories as $category) {
             $categoryOptions[$category->id] = $category->name;
         }
-        $typeOptions = $this->typeOptions;
-        $currencyOptions = $this->currencyOptions;
-        $statusOptions = $this->statusOptions;
-        return view('admin.product.create', compact('page', 'categoryOptions', 
-                                                    'typeOptions', 'currencyOptions', 'statusOptions'));
+
+        return array("categoryOptions"=>$categoryOptions);
     }
 
     /**
@@ -74,7 +81,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        abort(404, 'Not implemented');
     }
 
     /**
@@ -85,7 +92,19 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $page = (object) [
+            'title' => 'Product Edit'
+        ];
+        $product = Product::find($id);
+
+        $options = $this->prepareOptions();
+        $categoryOptions = $options['categoryOptions'];
+        $typeOptions = $this->typeOptions;
+        $currencyOptions = $this->currencyOptions;
+        $statusOptions = $this->statusOptions;
+
+        return view('admin.product.edit', compact('page', 'product', 'categoryOptions', 'typeOptions', 
+                                                    'currencyOptions', 'statusOptions'));
     }
 
     /**
@@ -108,6 +127,6 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        abort(404, 'Not implemented');
     }
 }

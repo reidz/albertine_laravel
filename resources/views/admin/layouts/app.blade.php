@@ -21,7 +21,7 @@
 				<ul class="nav navbar-nav">
 					<li class="{{ Request::is('admin/asset', 'admin/asset/*') ? 'active' : '' }}"><a href="{{route('asset.index')}}">Asset <span class="sr-only">(current)</span></a></li>
 					<li class="{{ Request::is('admin/category', 'admin/category/*') ? 'active' : '' }}"><a href="{{route('category.index')}}">Category <span class="sr-only">(current)</span></a></li>
-					<li class="{{ Request::is('admin/colour', 'admin/colour/*') ? 'active' : '' }}"><a href="{{route('colour.index')}}">Colour</a></li>
+					{{-- <li class="{{ Request::is('admin/colour', 'admin/colour/*') ? 'active' : '' }}"><a href="{{route('colour.index')}}">Colour</a></li> --}}
 					<li class="{{ Request::is('admin/product', 'admin/product/*') ? 'active' : '' }}"><a href="{{route('product.index')}}">Product</a></li>
 					<li class="{{ Request::is('admin/purchase', 'admin/purchase/*') ? 'active' : '' }}"><a href="#">Purchase</a></li>
 					<li class="{{ Request::is('admin/size', 'admin/size/*') ? 'active' : '' }}"><a href="{{route('size.index')}}">Size</a></li>

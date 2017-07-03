@@ -8,6 +8,7 @@ use App\Asset;
 use Illuminate\Support\Facades\Auth;
 use Image;
 use Storage;
+use Illuminate\Support\Facades\Validator;
 
 class AssetController extends Controller
 {
@@ -49,6 +50,12 @@ class AssetController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+                'name'=>'required|unique:assets',
+                'image'=>'required|max:70|mimes:jpeg,jpg'
+            ]);
+        // |dimensions:min_width=1500,min_height=750,ratio=4/3
+
         if ($request->file('image')->isValid()){
             // store original size with hashed name
             $imagePath = $request->file('image')->store('public');
@@ -56,32 +63,25 @@ class AssetController extends Controller
 
             // create and store thumbnail file
             $thumbnail = Image::make(Storage::get($imagePath))->resize(200,150)->encode();
-            $thumbnailName = explode('/',$imagePath)[1];
-            $thumbnailName = explode('.',$imagePath)[0];
+            $thumbnailPath = explode('/',$imagePath)[1];
+            $thumbnailPath = explode('.',$imagePath)[0];
             $thumbnailExtension = explode('.',$imagePath)[1];
-            $thumbnailName = $thumbnailName.'-th.'.$thumbnailExtension;
-            $thumbnailPath = Storage::put($thumbnailName, $thumbnail);
+            $thumbnailPath = $thumbnailPath.'-th.'.$thumbnailExtension;
+            Storage::put($thumbnailPath, $thumbnail);
+            $thumbnailName = explode('/',$thumbnailPath)[1];
+
+            // Storage::delete($imagePath);
+            // Storage::delete($thumbnailPath);
+            $asset = new Asset;
+            $asset->name = $request->name;
+            $asset->thumbnail_path = $thumbnailName;
+            $asset->image_path = $imageName;
+            $asset->created_by = Auth::user()->email;
+            $asset->updated_by = Auth::user()->email;
+            $insert = $asset->save();
+            session()->flash('message', 'Inserted successfully');
+            return redirect('admin/asset');
         }
-
-
-        // $asset = new asset;
-        // $this->validate($request, [
-        //         'name'=>'required|unique:assets',
-        //         'file'=>'required'
-        //     ]);
-        
-        // // resize to 200x200
-        // $thumbnail_path = null;
-        // $image_path = null;
-
-        // $asset->name = $request->name;
-        // $asset->thumbnail_path = $thumbnailName;
-        // $asset->image_path = $imageName;
-        // $asset->created_by = Auth::user()->email;
-        // $asset->updated_by = Auth::user()->email;
-        // $insert = $asset->save();
-        // session()->flash('message', 'Inserted successfully');
-        // return redirect('admin/asset');
     }
 
     /**

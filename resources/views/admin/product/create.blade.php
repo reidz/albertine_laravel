@@ -20,7 +20,7 @@
 		@show
 		<fieldset>
 			<div class="form-group row">
-				<label class="col-md-1 control-label">Category</label>
+				<label class="col-md-2 control-label">Category</label>
 				<div class="col-md-2">
 					<select class="form-control" id="category" name="category">
 						@foreach($categoryOptions as $key => $value)
@@ -35,13 +35,13 @@
 				</div>
 			</div>
 			<div class="form-group row">
-				<label class="col-md-1 control-label">Type</label>
+				<label class="col-md-2 control-label">Type</label>
 				<div class="col-md-2">
 					<select class="form-control" id="type" name="type">
 						@foreach($typeOptions as $key => $value)
 						<option value="{{$key}}" 
 							@if(isset($product->type))
-								{{ ($key === $product->currency) ? 'selected' : '' }}
+								{{ ($key === $product->type) ? 'selected' : '' }}
 							@endif>
 							{{$value}}
 						</option>
@@ -50,14 +50,14 @@
 				</div>
 			</div>
 			<div class="form-group row">
-				<label class="col-md-1 control-label">Name</label>
+				<label class="col-md-2 control-label">Name</label>
 				<div class="col-md-2">
 					<input type="text" class="form-control" name="name" id="name" value="{{$product->name or old('name')}}">
 				</div>
 			</div>
-			<div class="form-group row">
-				<label class="col-md-1 control-label">Currency - Amount</label>
-				<div class="col-md-2">
+			<div class="form-group row form-inline">
+				<label class="col-md-2 control-label">Currency - Amount</label>
+				<div class="col-md-4">
 					<select class="form-control" id="currency" name="currency">
 						@foreach($currencyOptions as $key => $value)
 						<option value="{{$key}}" 
@@ -68,15 +68,16 @@
 						</option>
 						@endforeach
 					</select>
+					<input type="number" class="form-control" name="name" id="name" value="{{$product->name or old('name')}}">
 				</div>
 			</div>
 			<div class="form-group row">
-				<label class="col-md-1 control-label">Status</label>
+				<label class="col-md-2 control-label">Status</label>
 				<div class="col-md-2">
 					<select class="form-control" id="status" name="status">
 						@foreach($statusOptions as $key => $value)
 						<option value="{{$key}}" 
-							@if(isset($product->is_active))
+							@if(isset($product->status))
 								{{ ($key === $product->status) ? 'selected' : '' }}
 							@endif>
 							{{$value}}
