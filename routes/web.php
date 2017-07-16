@@ -30,6 +30,10 @@ Route::resource('admin/colour', 'Admin\ColourController');
 Route::resource('admin/product', 'Admin\ProductController');
 Route::resource('admin/asset', 'Admin\AssetController');
 
+Route::POST('admin/assetAssignment/create', 'Admin\AssetAssignmentController@create')->name('assetAssignment.create');;
+Route::POST('admin/assetAssignment/update', 'Admin\AssetAssignmentController@update')->name('assetAssignment.update');;
+Route::POST('admin/assetAssignment/delete', 'Admin\AssetAssignmentController@destroy')->name('assetAssignment.destroy');;
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

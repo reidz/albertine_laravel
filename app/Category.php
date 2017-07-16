@@ -8,6 +8,6 @@ class Category extends Model
 {
 	public function scopeGetByIsActive($query, $isActive)
 	{
-		return $query->where('is_active', $isActive)->get();
+		return $query->where('is_active', $isActive);
 	}
 }

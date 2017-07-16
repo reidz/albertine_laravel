@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Product;
 use App\Colour;
 use App\Category;
+use App\Asset;
+use App\AssetAssignment;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
@@ -53,13 +55,13 @@ class ProductController extends Controller
 
     private function prepareOptions()
     {
-        $categories = Category::getByIsActive(true);
-        $categoryOptions = [];
-        foreach ($categories as $category) {
-            $categoryOptions[$category->id] = $category->name;
+        $categories = Category::getByIsActive(true)->get();
+        $productOptions = [];
+        foreach ($categories as $product) {
+            $productOptions[$product->id] = $product->name;
         }
 
-        return array("categoryOptions"=>$categoryOptions);
+        return array("categoryOptions"=>$productOptions);
     }
 
     /**
@@ -70,7 +72,27 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product = new Product;
+        $this->validate($request, [
+                'category'=>'required',
+                'type'=>'required',
+                'name'=>'required|unique:products',
+                'currency'=>'required',
+                'amount'=>'required|numeric',
+                'status'=>'required',
+            ]);
+        $product->category_id = $request->category;
+        $product->type = $request->type;
+        $product->name = $request->name;
+        $product->currency = $request->currency;
+        $product->amount = $request->amount;
+        $product->status = $request->status;
+        $product->created_by = Auth::user()->email;
+        $product->updated_by = Auth::user()->email;
+        $product->save();
+        session()->flash('message', 'Inserted successfully');
+        // redirect to edit page so user can insert asset assignments
+        return redirect('admin/product/'.$product->id.'/edit');
     }
 
     /**
@@ -97,13 +119,16 @@ class ProductController extends Controller
         ];
         $product = Product::find($id);
 
-        $options = $this->prepareOptions();
-        $categoryOptions = $options['categoryOptions'];
+        $assetAssignments = AssetAssignment::assignmentId($product->id)->get();
+        $assets = Asset::all();
+
+        $categoryOptions = $this->prepareOptions()['categoryOptions'];
         $typeOptions = $this->typeOptions;
         $currencyOptions = $this->currencyOptions;
         $statusOptions = $this->statusOptions;
 
-        return view('admin.product.edit', compact('page', 'product', 'categoryOptions', 'typeOptions', 
+        return view('admin.product.edit', compact('page', 'product', 'assetAssignments', 'assets',
+                                                    'categoryOptions', 'typeOptions', 
                                                     'currencyOptions', 'statusOptions'));
     }
 
@@ -116,7 +141,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // $category = Category::find($id);
+        // $this->validate($request, [
+        //         'name'=>'required',
+        //         'is_active'=>'required'
+        //     ]);
+        // $category->name = $request->name;
+        // $category->is_active = $request->is_active;
+        // $category->updated_by = Auth::user()->email;
+        // $category->save();
+        // session()->flash('message', 'Updated successfully');
+        // return redirect('admin/category');
+        return $request->all();
     }
 
     /**

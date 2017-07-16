@@ -10,4 +10,9 @@ class Product extends Model
     {
         return $this->belongsTo('App\Category');
     }
+
+    public function assetAssignments()
+    {
+    	return $this->morphMany('App\AssetAssignments', 'assignment');
+    }
 }
