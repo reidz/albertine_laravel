@@ -168,7 +168,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal" id="modalAssignmentRemove">Remove</button>
+				<button type="button" class="btn btn-danger" id="modalAssignmentRemove">Remove</button>
 				<button type="button" class="btn btn-primary" id="modalAssignmentSave">Save changes</button>
 			</div>
 		</div>
@@ -193,10 +193,6 @@
 					@endforeach
 				@endif
 				<div class="clearfix"></div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
 			</div>
 		</div>
 	</div>
@@ -301,8 +297,25 @@
 		});
 
 		$('#modalAssignmentRemove').click(function(event) {
-			var id = $("#modalAssignment #modalId").val('');
-			// ajax post remove
+			var r = confirm("Are you sure want to remove this asset assignment ?");
+			if (r == true)
+			{
+			    var id = $("#modalAssignment #modalId").val();
+			    console.log(id);
+			    $.post('/admin/assetAssignment/delete', {'id': id, '_token': $('input:hidden[name=_token]').val()}, function(data) {
+			    	if(data == 'failed')
+			    	{
+			    		alert('Failed');
+			    	}
+			    	else
+			    	{
+			    		alert('Success');
+			    		// white space before #name is intended
+			    		$('#assignments').load(location.href + ' #assignments');
+			    	}
+			    	$('#modalAssignment').modal('hide');
+			    });
+			}
 		});
 	});
 </script>

@@ -58,8 +58,9 @@ class AssetAssignmentController extends Controller
         }    	
     }
 
-    public function destroy($request)
+    public function destroy(Request $request)
     {
-        abort(404, 'Not implemented');
+    	AssetAssignment::destroy($request->id);
+        return 'success';
     }
 }
