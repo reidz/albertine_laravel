@@ -26,4 +26,9 @@ class AssetAssignment extends Model
 		return $query->where('assignment_id', $assignment_id);
 	}
 
+    public function scopeIsMain($query)
+    {
+        return $query->where('weight', 0)->take(1);
+    }
+
 }

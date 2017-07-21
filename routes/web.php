@@ -11,9 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     // return view('welcome');
+//     return view('index');
+// });
+Route::GET('/','PageController@index');
+Route::GET('products','PageController@products');
 
 Route::GET('admin/home','AdminController@index');
 

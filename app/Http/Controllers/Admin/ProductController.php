@@ -15,6 +15,7 @@ class ProductController extends Controller
 {
     private $typeOptions = ['SHOES'=>'SHOES', 'UPSELL'=>'UPSELL',];
     private $currencyOptions = ['IDR'=>'IDR'];
+    private $featuredOptions = [1=>'Yes', 0=>'No'];
     private $statusOptions = ['READY_STOCK'=>'READY_STOCK', 'OUT_OF_STOCK'=>'OUT_OF_STOCK', 'INACTIVE' => 'INACTIVE',];
 
 
@@ -47,21 +48,22 @@ class ProductController extends Controller
         $categoryOptions = $this->prepareOptions()['categoryOptions'];
         $typeOptions = $this->typeOptions;
         $currencyOptions = $this->currencyOptions;
+        $featuredOptions = $this->featuredOptions;
         $statusOptions = $this->statusOptions;
 
         return view('admin.product.create', compact('page', 'categoryOptions', 'typeOptions', 
-                                                    'currencyOptions', 'statusOptions'));
+                                                    'currencyOptions', 'statusOptions', 'featuredOptions'));
     }
 
     private function prepareOptions()
     {
         $categories = Category::getByIsActive(true)->get();
-        $productOptions = [];
-        foreach ($categories as $product) {
-            $productOptions[$product->id] = $product->name;
+        $categoryOptions = [];
+        foreach ($categories as $category) {
+            $categoryOptions[$category->id] = $category->name;
         }
 
-        return array("categoryOptions"=>$productOptions);
+        return array("categoryOptions"=>$categoryOptions);
     }
 
     /**
@@ -80,6 +82,7 @@ class ProductController extends Controller
                 'currency'=>'required',
                 'amount'=>'required|numeric',
                 'status'=>'required',
+                'is_featured'=>'required|numeric',
             ]);
         $product->category_id = $request->category;
         $product->type = $request->type;
@@ -87,6 +90,7 @@ class ProductController extends Controller
         $product->currency = $request->currency;
         $product->amount = $request->amount;
         $product->status = $request->status;
+        $product->is_featured = $request->is_featured;
         $product->created_by = Auth::user()->email;
         $product->updated_by = Auth::user()->email;
         $product->save();
@@ -126,10 +130,11 @@ class ProductController extends Controller
         $typeOptions = $this->typeOptions;
         $currencyOptions = $this->currencyOptions;
         $statusOptions = $this->statusOptions;
+        $featuredOptions = $this->featuredOptions;
 
         return view('admin.product.edit', compact('page', 'product', 'assetAssignments', 'assets',
                                                     'categoryOptions', 'typeOptions', 
-                                                    'currencyOptions', 'statusOptions'));
+                                                    'currencyOptions', 'statusOptions', 'featuredOptions'));
     }
 
     /**

@@ -110,6 +110,21 @@
 					</select>
 				</div>
 			</div>
+			<div class="form-group row">
+				<label class="col-md-2 control-label">Is Featured</label>
+				<div class="col-md-2">
+					<select class="form-control" id="is_featured" name="is_featured">
+						@foreach($featuredOptions as $key => $value)
+						<option value="{{$key}}" 
+						@if(isset($product->is_featured))
+						{{ ($key === $product->is_featured) ? 'selected' : '' }}
+						@endif>
+						{{$value}}
+						</option>
+						@endforeach
+					</select>
+				</div>
+			</div>
 			<div class="well">
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</div>
