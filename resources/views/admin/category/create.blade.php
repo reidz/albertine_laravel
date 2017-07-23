@@ -13,6 +13,11 @@
 			<a href="{{route('category.index')}}" class="btn btn-info">Back</a>
 		</div>
 	</div>
+	bisa jadi problem kalo misalnya name ada spasi, soalnya kepake di URL /collections/name,
+	handle bikin 1 field baru name dan displayName aja, displayname boleh pake spasi
+	contoh:
+	name sepatu-santai
+	display name Sepatu Santai
 	
 	<form class="form-horizontal" action="/admin/category/@yield('editId')" method="post">
 		{{csrf_field()}}
@@ -20,6 +25,7 @@
 		@show
 		<fieldset>
 			<div class="form-group row">
+
 				<label class="col-md-1 control-label">Name</label>
 				<div class="col-md-2">
 					<input type="text" class="form-control" name="name" id="name" value="{{$category->name or old('name')}}">

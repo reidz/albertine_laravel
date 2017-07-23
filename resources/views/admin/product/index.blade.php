@@ -17,10 +17,12 @@
 		<table class="table table-striped table-hover ">
 			<thead>
 				<tr>
-					<th>Name</th>
+					<th>Display Name</th>
 					<th>Status</th>
 					<th>Category</th>
-					<th>Created at</th>
+					<th>Stock, Sold, Held, Available</th>
+					<th>Featured</th>
+					{{-- <th>Created at</th> --}}
 					<th>Updated at</th>
 					<th>Action</th>
 				</tr>
@@ -28,10 +30,12 @@
 			<tbody>
 				@foreach($products as $product)
 				<tr>
-					<td>{{$product->name}}</td>	
+					<td>{{$product->display_name}}</td>	
 					<td>{{$product->status}}</td>
 					<td>{{$product->category->name}}</td>
-					<td>{{$product->created_at->toDayDateTimeString()}}</td>
+					<td>{{$product->stock}}, {{$product->stock_sold}}, {{$product->stock_held}}, {{$product->stock - $product->stock_sold - $product->stock_held}}</td>
+					<td>{{$product->is_featured}}</td>
+					{{-- <td>{{$product->created_at->toDayDateTimeString()}}</td> --}}
 					<td>{{$product->updated_at->toDayDateTimeString()}}</td>
 					<td>
 						<a href="{{route('product.edit', $product->id)}}"><span class="glyphicon glyphicon-pencil btn-spacing" aria-hidden="true"></span></a>

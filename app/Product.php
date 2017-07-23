@@ -30,4 +30,14 @@ class Product extends Model
 	{
 		return $query->where('is_featured', 1);
 	}
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtolower($value);
+    }
+
+    public function getStockAvailableAttribute()
+    {
+        return $this->attributes['stock'] - $this->attributes['stock_sold'] - $this->attributes['stock_held'];
+    }
 }

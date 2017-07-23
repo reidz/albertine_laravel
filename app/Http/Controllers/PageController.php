@@ -7,6 +7,7 @@ use App\Product;
 use App\AssetAssignment;
 use App\Asset;
 use App\Category;
+use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
@@ -32,15 +33,43 @@ class PageController extends Controller
 
     // param in; category, page
     // default value aja
-    public function products()
+    public function collections($requestCategory)
     {
-    	$categories = Category::getByIsActive(1)->get();
-    	$defaultCategory = $categories[0];
-    	
-    	$products = Product::getByCategory($defaultCategory->id)->get();
+        $numOfItems = 2;
 
-    	// $assets
-    	$page = 0;
-    	return view('customer.products', compact('page', 'categories', 'products'));
+        // default category all
+    	// $defaultCategory = $categories[0];
+
+        // get all active categories
+        $categories = Category::getByIsActive(1)->get();
+    	
+        // in case category not found in category, treat as all
+        $found = false;
+        $categoryId = null;
+        foreach ($categories as $category)
+        {
+            if(strtolower($requestCategory)  == strtolower($category->name))
+            {
+                $found = true;
+                $categoryId = $category->id;
+            }
+        }
+
+        $products = null;
+
+        // enaknya gimana ? kalo !found apa mau dilempar ke 404 aja ?
+        // gw pengennya engga sih, treat sama kayak all aja lah ya
+        if($requestCategory == 'all' || !$found)
+        {
+            // get products regardless category
+            $products = Product::paginate($numOfItems);
+        }
+        else
+        {
+            $products = Product::getByCategory($categoryId)->paginate($numOfItems);
+        }
+
+        // return $products;
+        return view('customer.collections', compact('categories', 'products'));
     }
 }

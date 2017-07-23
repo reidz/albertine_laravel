@@ -16,7 +16,7 @@
 //     return view('index');
 // });
 Route::GET('/','PageController@index');
-Route::GET('products','PageController@products');
+Route::GET('collections/{category}','PageController@collections')->name('customer.collections');
 
 Route::GET('admin/home','AdminController@index');
 

@@ -10,4 +10,9 @@ class Category extends Model
 	{
 		return $query->where('is_active', $isActive);
 	}
+
+	public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtolower($value);
+    }
 }

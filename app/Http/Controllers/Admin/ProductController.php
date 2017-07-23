@@ -15,7 +15,7 @@ class ProductController extends Controller
 {
     private $typeOptions = ['SHOES'=>'SHOES', 'UPSELL'=>'UPSELL',];
     private $currencyOptions = ['IDR'=>'IDR'];
-    private $featuredOptions = [1=>'Yes', 0=>'No'];
+    private $yesnoOptions = [1=>'Yes', 0=>'No'];
     private $statusOptions = ['READY_STOCK'=>'READY_STOCK', 'OUT_OF_STOCK'=>'OUT_OF_STOCK', 'INACTIVE' => 'INACTIVE',];
 
 
@@ -48,11 +48,11 @@ class ProductController extends Controller
         $categoryOptions = $this->prepareOptions()['categoryOptions'];
         $typeOptions = $this->typeOptions;
         $currencyOptions = $this->currencyOptions;
-        $featuredOptions = $this->featuredOptions;
+        $yesnoOptions = $this->yesnoOptions;
         $statusOptions = $this->statusOptions;
 
         return view('admin.product.create', compact('page', 'categoryOptions', 'typeOptions', 
-                                                    'currencyOptions', 'statusOptions', 'featuredOptions'));
+                                                    'currencyOptions', 'statusOptions', 'yesnoOptions'));
     }
 
     private function prepareOptions()
@@ -78,17 +78,26 @@ class ProductController extends Controller
         $this->validate($request, [
                 'category'=>'required',
                 'type'=>'required',
+                'name'=>'alpha_dash|required|unique:products',
                 'name'=>'required|unique:products',
                 'currency'=>'required',
                 'amount'=>'required|numeric',
                 'status'=>'required',
                 'is_featured'=>'required|numeric',
+                'is_sale'=>'required|numeric',
+                'sale_amount'=>'required|numeric',
+                'stock' =>'required|numeric',
             ]);
+
         $product->category_id = $request->category;
         $product->type = $request->type;
         $product->name = $request->name;
+        $product->display_name = $request->display_name;
         $product->currency = $request->currency;
         $product->amount = $request->amount;
+        $product->is_sale = $request->is_sale;
+        $product->sale_amount = $request->sale_amount;
+        $product->stock = $request->stock;
         $product->status = $request->status;
         $product->is_featured = $request->is_featured;
         $product->created_by = Auth::user()->email;
@@ -130,11 +139,11 @@ class ProductController extends Controller
         $typeOptions = $this->typeOptions;
         $currencyOptions = $this->currencyOptions;
         $statusOptions = $this->statusOptions;
-        $featuredOptions = $this->featuredOptions;
+        $yesnoOptions = $this->yesnoOptions;
 
         return view('admin.product.edit', compact('page', 'product', 'assetAssignments', 'assets',
                                                     'categoryOptions', 'typeOptions', 
-                                                    'currencyOptions', 'statusOptions', 'featuredOptions'));
+                                                    'currencyOptions', 'statusOptions', 'yesnoOptions'));
     }
 
     /**
@@ -146,18 +155,37 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $category = Category::find($id);
-        // $this->validate($request, [
-        //         'name'=>'required',
-        //         'is_active'=>'required'
-        //     ]);
-        // $category->name = $request->name;
-        // $category->is_active = $request->is_active;
-        // $category->updated_by = Auth::user()->email;
-        // $category->save();
-        // session()->flash('message', 'Updated successfully');
-        // return redirect('admin/category');
-        return $request->all();
+        $product = Product::find($id);
+
+        $this->validate($request, [
+                'category'=>'required',
+                'type'=>'required',
+                'name'=>'alpha_dash|required|unique:products,name,'.$id,
+                'display_name'=>'required|unique:products,display_name,'.$id,
+                'currency'=>'required',
+                'amount'=>'required|numeric',
+                'status'=>'required',
+                'is_featured'=>'required|numeric',
+                'is_sale'=>'required|numeric',
+                'sale_amount'=>'required|numeric',
+                'stock' =>'required|numeric',
+            ]);
+        $product->category_id = $request->category;
+        $product->type = $request->type;
+        $product->name = $request->name;
+        $product->display_name = $request->display_name;
+        $product->currency = $request->currency;
+        $product->amount = $request->amount;
+        $product->is_sale = $request->is_sale;
+        $product->sale_amount = $request->sale_amount;
+        $product->stock = $request->stock;
+        $product->status = $request->status;
+        $product->is_featured = $request->is_featured;
+        $product->updated_by = Auth::user()->email;
+
+        $product->save();
+        session()->flash('message', 'Updated successfully');
+        return redirect('admin/product/'.$product->id.'/edit');
     }
 
     /**

@@ -79,6 +79,12 @@
 					<input type="text" class="form-control" name="name" id="name" value="{{$product->name or old('name')}}">
 				</div>
 			</div>
+			<div class="form-group row">
+				<label class="col-md-2 control-label">Display Name</label>
+				<div class="col-md-2">
+					<input type="text" class="form-control" name="display_name" id="display_name" value="{{$product->display_name or old('display_name')}}">
+				</div>
+			</div>
 			<div class="form-group row form-inline">
 				<label class="col-md-2 control-label">Currency - Amount</label>
 				<div class="col-md-4">
@@ -93,6 +99,33 @@
 					@endforeach
 				</select>
 					<input type="number" class="form-control" name="amount" id="amount" value="{{$product->amount or old('amount')}}">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-md-2 control-label">Is Sale</label>
+				<div class="col-md-2">
+					<select class="form-control" id="is_sale" name="is_sale">
+						@foreach($yesnoOptions as $key => $value)
+						<option value="{{$key}}" 
+						@if(isset($product->is_sale))
+						{{ ($key === $product->is_sale) ? 'selected' : '' }}
+						@endif>
+						{{$value}}
+						</option>
+						@endforeach
+					</select>
+				</div>
+			</div>
+			<div class="form-group row form-inline">
+				<label class="col-md-2 control-label">Sale Amount</label>
+				<div class="col-md-4">
+					<input type="number" class="form-control" name="sale_amount" id="sale_amount" value="{{$product->sale_amount or old('sale_amount')}}">
+				</div>
+			</div>
+			<div class="form-group row form-inline">
+				<label class="col-md-2 control-label">Alloted Stock</label>
+				<div class="col-md-4">
+					<input type="number" class="form-control" name="stock" id="stock" value="{{$product->stock or old('stock')}}">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -114,7 +147,7 @@
 				<label class="col-md-2 control-label">Is Featured</label>
 				<div class="col-md-2">
 					<select class="form-control" id="is_featured" name="is_featured">
-						@foreach($featuredOptions as $key => $value)
+						@foreach($yesnoOptions as $key => $value)
 						<option value="{{$key}}" 
 						@if(isset($product->is_featured))
 						{{ ($key === $product->is_featured) ? 'selected' : '' }}

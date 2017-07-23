@@ -101,7 +101,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $this->validate($request, [
-                'name'=>'required',
+                'name'=>'required|unique:categories,name,'$id,
                 'is_active'=>'required'
             ]);
         $category->name = $request->name;
