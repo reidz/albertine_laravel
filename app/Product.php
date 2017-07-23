@@ -38,6 +38,6 @@ class Product extends Model
 
     public function getStockAvailableAttribute()
     {
-        return $this->attributes['stock'] - $this->attributes['stock_sold'] - $this->attributes['stock_held'];
+        return $this->attributes['stock'] - $this->attributes['stock_sold'] - $this->attributes['stock_holding'];
     }
 }

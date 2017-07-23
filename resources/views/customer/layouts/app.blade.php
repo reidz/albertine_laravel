@@ -27,6 +27,26 @@
             border: 1px solid #50514F;
         }
 
+        /* Sticky footer styles
+        -------------------------------------------------- */
+        html {
+          position: relative;
+          min-height: 100%;
+        }
+        body {
+          /* Margin bottom by footer height */
+          /* footer height currently 100, need to adjust if needed */
+          margin-bottom: 100px;
+        }
+        .footer {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          /* Set the fixed height of the footer here */
+          height: 100px;
+          background-color: #f5f5f5;
+        }
+
 
     </style>
 </head>
@@ -46,10 +66,10 @@
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-left: 200px;">
                     <ul class="nav navbar-nav">
-                        <li class="{{ Request::is('admin/asset', 'admin/asset/*') ? 'active' : '' }}"><a href="{{route('asset.index')}}">HOME <span class="sr-only">(current)</span></a></li>
-                        <li class="{{ Request::is('admin/category', 'admin/category/*') ? 'active' : '' }}"><a href="{{route('category.index')}}">COLLECTIONS <span class="sr-only">(current)</span></a></li>
-                        <li class="{{ Request::is('admin/product', 'admin/product/*') ? 'active' : '' }}"><a href="{{route('product.index')}}">HOW TO ORDER</a></li>
-                        <li class="{{ Request::is('admin/size', 'admin/size/*') ? 'active' : '' }}"><a href="{{route('size.index')}}">CONTACT</a></li>
+                        <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="{{route('customer.index')}}">HOME <span class="sr-only">(current)</span></a></li>
+                        <li class="{{ Request::is('collections', 'collections/*') ? 'active' : '' }}"><a href="{{route('customer.collections', 'all')}}">COLLECTIONS <span class="sr-only">(current)</span></a></li>
+                        <li class="{{ Request::is('how-to-order', 'how-to-order/*') ? 'active' : '' }}"><a href="{{route('product.index')}}">HOW TO ORDER</a></li>
+                        <li class="{{ Request::is('contact', 'contact/*') ? 'active' : '' }}"><a href="{{route('size.index')}}">CONTACT</a></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">

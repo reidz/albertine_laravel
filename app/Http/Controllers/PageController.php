@@ -31,8 +31,6 @@ class PageController extends Controller
     	return view('customer.index' , compact('featuredProducts'));
     }
 
-    // param in; category, page
-    // default value aja
     public function collections($requestCategory)
     {
         $numOfItems = 2;
@@ -69,7 +67,21 @@ class PageController extends Controller
             $products = Product::getByCategory($categoryId)->paginate($numOfItems);
         }
 
+        foreach ($products as $key => $product) {
+            $assetAssignment = AssetAssignment::assignmentId($product->id)->isMain()->first();
+            $asset = Asset::find($assetAssignment['asset_id']);
+            $product->thumbnail_path = $asset['thumbnail_path'];
+        }
+
         // return $products;
         return view('customer.collections', compact('categories', 'products'));
+    }
+
+    // url-nya apa gini aja ?
+    // domain/collections/{category}/{product}
+    public function product($requestProduct)
+    {
+        // fetch asssetAssignment, order by weight
+        // set default highlighted asset, weight 0
     }
 }

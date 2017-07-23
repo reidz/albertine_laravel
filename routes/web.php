@@ -15,7 +15,7 @@
 //     // return view('welcome');
 //     return view('index');
 // });
-Route::GET('/','PageController@index');
+Route::GET('/','PageController@index')->name('customer.index');
 Route::GET('collections/{category}','PageController@collections')->name('customer.collections');
 
 Route::GET('admin/home','AdminController@index');
@@ -35,7 +35,11 @@ Route::resource('admin/asset', 'Admin\AssetController');
 
 Route::POST('admin/assetAssignment/create', 'Admin\AssetAssignmentController@create')->name('assetAssignment.create');;
 Route::POST('admin/assetAssignment/update', 'Admin\AssetAssignmentController@update')->name('assetAssignment.update');;
-Route::POST('admin/assetAssignment/delete', 'Admin\AssetAssignmentController@destroy')->name('assetAssignment.destroy');;
+Route::POST('admin/assetAssignment/delete', 'Admin\AssetAssignmentController@destroy')->name('assetAssignment.destroy');
+
+Route::POST('admin/productStock/create', 'Admin\ProductStockController@create')->name('productStock.create');
+Route::POST('admin/productStock/update', 'Admin\ProductStockController@update')->name('productStock.update');
+Route::POST('admin/productStock/delete', 'Admin\ProductStockController@destroy')->name('productStock.destroy');
 
 Auth::routes();
 

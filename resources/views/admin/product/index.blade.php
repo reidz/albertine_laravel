@@ -20,7 +20,7 @@
 					<th>Display Name</th>
 					<th>Status</th>
 					<th>Category</th>
-					<th>Stock, Sold, Held, Available</th>
+					<th>Stock, Sold, Holding, Available</th>
 					<th>Featured</th>
 					{{-- <th>Created at</th> --}}
 					<th>Updated at</th>
@@ -33,7 +33,7 @@
 					<td>{{$product->display_name}}</td>	
 					<td>{{$product->status}}</td>
 					<td>{{$product->category->name}}</td>
-					<td>{{$product->stock}}, {{$product->stock_sold}}, {{$product->stock_held}}, {{$product->stock - $product->stock_sold - $product->stock_held}}</td>
+					<td>{{$product->stock}}, {{$product->stock_sold}}, {{$product->stock_held}}, {{$product->stock - $product->stock_sold - $product->stock_holding}}</td>
 					<td>{{$product->is_featured}}</td>
 					{{-- <td>{{$product->created_at->toDayDateTimeString()}}</td> --}}
 					<td>{{$product->updated_at->toDayDateTimeString()}}</td>

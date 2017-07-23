@@ -14,8 +14,7 @@
 				</div>
 			@endforeach
 		</div>
-			
-	        		
-		<p class="text-center">VIEW ALL COLLECTIONS</p>
+					
+		<p class="text-center"><a href="{{route('customer.collections', 'all')}}">VIEW ALL COLLECTIONS</a></p>
 	</div>
 	@endsection

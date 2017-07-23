@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Product;
-use App\Colour;
-use App\Category;
+use Illuminate\Support\Facades\Auth;
 use App\Asset;
 use App\AssetAssignment;
-use Illuminate\Support\Facades\Auth;
+use App\Category;
+use App\Colour;
+use App\Product;
+use App\ProductStock;
+use App\Size;
 
 class ProductController extends Controller
 {
@@ -35,6 +37,23 @@ class ProductController extends Controller
         return view('admin.product.index' , compact('products'));
     }
 
+    private function prepareOptions()
+    {
+        $categories = Category::getByIsActive(true)->get();
+        $categoryOptions = [];
+        foreach ($categories as $category) {
+            $categoryOptions[$category->id] = $category->display_name;
+        }
+
+        $sizes = Size::get();
+        $sizeOptions = [];
+        foreach ($sizes as $size) {
+            $sizeOptions[$size->id] = $size->size_value;
+        }
+
+        return array("categoryOptions"=>$categoryOptions, "sizeOptions"=>$sizeOptions);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -45,25 +64,16 @@ class ProductController extends Controller
         $page = (object) [
             'title' => 'Product New'
         ];
-        $categoryOptions = $this->prepareOptions()['categoryOptions'];
+        $options = $this->prepareOptions();
+        $categoryOptions = $options['categoryOptions'];
+        $sizeOptions = $options['sizeOptions'];
         $typeOptions = $this->typeOptions;
         $currencyOptions = $this->currencyOptions;
         $yesnoOptions = $this->yesnoOptions;
         $statusOptions = $this->statusOptions;
 
-        return view('admin.product.create', compact('page', 'categoryOptions', 'typeOptions', 
+        return view('admin.product.create', compact('page', 'categoryOptions', 'typeOptions', 'sizeOptions',
                                                     'currencyOptions', 'statusOptions', 'yesnoOptions'));
-    }
-
-    private function prepareOptions()
-    {
-        $categories = Category::getByIsActive(true)->get();
-        $categoryOptions = [];
-        foreach ($categories as $category) {
-            $categoryOptions[$category->id] = $category->name;
-        }
-
-        return array("categoryOptions"=>$categoryOptions);
     }
 
     /**
@@ -79,27 +89,30 @@ class ProductController extends Controller
                 'category'=>'required',
                 'type'=>'required',
                 'name'=>'alpha_dash|required|unique:products',
-                'name'=>'required|unique:products',
+                'colour_name'=>'alpha|required',
                 'currency'=>'required',
                 'amount'=>'required|numeric',
                 'status'=>'required',
                 'is_featured'=>'required|numeric',
                 'is_sale'=>'required|numeric',
                 'sale_amount'=>'required|numeric',
-                'stock' =>'required|numeric',
+                // 'stock' =>'required|numeric',
+                'is_new'=>'required|numeric',
             ]);
 
         $product->category_id = $request->category;
         $product->type = $request->type;
+        $product->colour_name = $request->colour_name;
         $product->name = $request->name;
         $product->display_name = $request->display_name;
         $product->currency = $request->currency;
         $product->amount = $request->amount;
         $product->is_sale = $request->is_sale;
         $product->sale_amount = $request->sale_amount;
-        $product->stock = $request->stock;
+        // $product->stock = $request->stock;
         $product->status = $request->status;
         $product->is_featured = $request->is_featured;
+        $product->is_new = $request->is_new;
         $product->created_by = Auth::user()->email;
         $product->updated_by = Auth::user()->email;
         $product->save();
@@ -132,17 +145,21 @@ class ProductController extends Controller
         ];
         $product = Product::find($id);
 
-        $assetAssignments = AssetAssignment::assignmentId($product->id)->get();
+        $assetAssignments = AssetAssignment::assignmentId($product->id)->orderByWeight()->get();
         $assets = Asset::all();
 
-        $categoryOptions = $this->prepareOptions()['categoryOptions'];
+        $productStocks = ProductStock::productId($id)->get();
+
+        $options = $this->prepareOptions();
+        $categoryOptions = $options['categoryOptions'];
+        $sizeOptions = $options['sizeOptions'];
         $typeOptions = $this->typeOptions;
         $currencyOptions = $this->currencyOptions;
         $statusOptions = $this->statusOptions;
         $yesnoOptions = $this->yesnoOptions;
 
-        return view('admin.product.edit', compact('page', 'product', 'assetAssignments', 'assets',
-                                                    'categoryOptions', 'typeOptions', 
+        return view('admin.product.edit', compact('page', 'product', 'assetAssignments', 'assets', 'productStocks',
+                                                    'categoryOptions', 'typeOptions', 'sizeOptions',
                                                     'currencyOptions', 'statusOptions', 'yesnoOptions'));
     }
 
@@ -160,6 +177,7 @@ class ProductController extends Controller
         $this->validate($request, [
                 'category'=>'required',
                 'type'=>'required',
+                'colour_name'=>'alpha|required',
                 'name'=>'alpha_dash|required|unique:products,name,'.$id,
                 'display_name'=>'required|unique:products,display_name,'.$id,
                 'currency'=>'required',
@@ -168,19 +186,22 @@ class ProductController extends Controller
                 'is_featured'=>'required|numeric',
                 'is_sale'=>'required|numeric',
                 'sale_amount'=>'required|numeric',
-                'stock' =>'required|numeric',
+                // 'stock' =>'required|numeric',
+                'is_new'=>'required|numeric',
             ]);
         $product->category_id = $request->category;
         $product->type = $request->type;
+        $product->colour_name = $request->colour_name;
         $product->name = $request->name;
         $product->display_name = $request->display_name;
         $product->currency = $request->currency;
         $product->amount = $request->amount;
         $product->is_sale = $request->is_sale;
         $product->sale_amount = $request->sale_amount;
-        $product->stock = $request->stock;
+        // $product->stock = $request->stock;
         $product->status = $request->status;
         $product->is_featured = $request->is_featured;
+        $product->is_new = $request->is_new;
         $product->updated_by = Auth::user()->email;
 
         $product->save();

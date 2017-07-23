@@ -80,6 +80,12 @@
 				</div>
 			</div>
 			<div class="form-group row">
+				<label class="col-md-2 control-label">Colour</label>
+				<div class="col-md-2">
+					<input type="text" class="form-control" name="colour_name" id="colour_name" value="{{$product->colour_name or old('colour_name')}}">
+				</div>
+			</div>
+			<div class="form-group row">
 				<label class="col-md-2 control-label">Display Name</label>
 				<div class="col-md-2">
 					<input type="text" class="form-control" name="display_name" id="display_name" value="{{$product->display_name or old('display_name')}}">
@@ -122,12 +128,12 @@
 					<input type="number" class="form-control" name="sale_amount" id="sale_amount" value="{{$product->sale_amount or old('sale_amount')}}">
 				</div>
 			</div>
-			<div class="form-group row form-inline">
+			{{-- <div class="form-group row form-inline">
 				<label class="col-md-2 control-label">Alloted Stock</label>
 				<div class="col-md-4">
 					<input type="number" class="form-control" name="stock" id="stock" value="{{$product->stock or old('stock')}}">
 				</div>
-			</div>
+			</div> --}}
 			<div class="form-group row">
 				<label class="col-md-2 control-label">Status</label>
 				<div class="col-md-2">
@@ -141,6 +147,12 @@
 						</option>
 						@endforeach
 					</select>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-md-2 control-label">Details</label>
+				<div class="col-md-2">
+					<textarea rows="5" class="form-control" name="details" id="details" value="{{$product->details or old('details')}}">{{$product->details or old('details')}}</textarea>
 				</div>
 			</div>
 			<div class="form-group row">
@@ -158,11 +170,104 @@
 					</select>
 				</div>
 			</div>
+			<div class="form-group row">
+				<label class="col-md-2 control-label">Is New</label>
+				<div class="col-md-2">
+					<select class="form-control" id="is_new" name="is_new">
+						@foreach($yesnoOptions as $key => $value)
+						<option value="{{$key}}" 
+						@if(isset($product->is_new))
+						{{ ($key === $product->is_new) ? 'selected' : '' }}
+						@endif>
+						{{$value}}
+						</option>
+						@endforeach
+					</select>
+				</div>
+			</div>
 			<div class="well">
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</div>
 		</fieldset>
 	</form>
+			@if(!empty($product))
+			<div class="form-group row form-inline">
+				<label class="col-md-2 control-label">Sizes</label>
+				<button type="button" id="addStock" class="btn btn-primary" data-toggle="modal" data-target="#modalStock">
+					Add Stock Size
+				</button>
+			</div>
+			@endif
+
+			<div id="stocks">
+				@if(!empty($productStocks))
+					<table class="table table-striped table-hover" style="width: 500px;">
+						<thead>
+							<tr>
+								<th>Size</th>
+								<th>Stock</th>
+								<th>Is active</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+					@foreach($productStocks as $productStock)
+							<tr>
+								<td>{{$productStock->size->size_value}}</td>
+								<td>{{$productStock->stock}}</td>
+								<td>{{$productStock->is_active}}</td>
+								<td>
+									<a href="#stocks" class="stocks"><span class="glyphicon glyphicon-pencil btn-spacing" aria-hidden="true"></span></a>
+									<input type="hidden" name="id" value="{{$productStock->id}}" />
+									<input type="hidden" name="size_id" value="{{$productStock->size_id}}" />
+									<input type="hidden" name="stock" value="{{$productStock->stock}}" />
+									<input type="hidden" name="is_active" value="{{$productStock->is_active}}" />
+								</td>
+							</tr>
+					@endforeach
+						</tbody>
+					</table>
+				@endif
+			</div>
+
+<div class="modal fade" id="modalStock" tabindex="-1" role="dialog" aria-labelledby="modalStockLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="modalProductStockLabel">Product Stock</h4>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" name="modalStockId" id="modalStockId" value="" />
+				<input type="hidden" name="modalStockProductId" id="modalStockProductId" value="{{$product->id}}" />
+
+				<div class="row">
+					<label class="col-md-2">Size</label>
+					<select class="form-control" id="modalStockSize" name="modalStockSize">
+						@foreach($sizeOptions as $key => $value)
+						<option value="{{$key}}">{{$value}}</option>
+						@endforeach
+					</select>
+				</div>
+
+				<div class="row">
+					<label class="col-md-2">Stock</label>
+					<input type="number" class="form-control" name="modalStockStock" id="modalStockStock" value="">
+				</div>
+
+				<div class="row">
+					<label class="col-md-2">Is active</label>
+					<input type="number" class="form-control" name="modalStockIsActive" id="modalStockIsActive" value="">
+					<p class="text-muted">1: active, 0: inactive</p>
+				</div>				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="modalStockSave">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 			@if(!empty($product))
 			<div class="form-group row form-inline">
@@ -284,6 +389,33 @@
 			console.log(id+'-'+imagePath);
 		});
 
+		$('#addStock').click(function(event) {
+			// clear modal input values first
+			$("#modalStock #modalStockId").val('');
+			$("#modalStock #modalStockSize").val('');
+			$("#modalStock #modalStockStock").val('');
+			$("#modalStock #modalStockIsActive").val('');
+			$("#modalStock #modalStockSize").prop('disabled', false);
+		});
+
+		$('.stocks').click(function(event) {
+			var id = $(this).siblings(':hidden[name=id]').val();
+			var size_id = $(this).siblings(':hidden[name=size_id]').val();
+			// var product_id = $(this).siblings(':hidden[name=product_id]').val();
+			var stock = $(this).siblings(':hidden[name=stock]').val();
+			var is_active = $(this).siblings(':hidden[name=is_active]').val();
+
+			$("#modalStock #modalStockSize").prop('disabled', 'disabled');
+
+			// console.log(id+'-'+stock);
+			$("#modalStock #modalStockId").val(id);
+			$("#modalStock #modalStockSize").val(size_id);
+			$("#modalStock #modalStockStock").val(stock);
+			$("#modalStock #modalStockIsActive").val(is_active);
+			$('#modalStock').modal('show');
+			// console.log(id+'-'+imagePath);
+		});
+
 		$('#addAssignment').click(function(event) {
 			// clear modal input values first
 			$("#modalAssignment #modalId").val('');
@@ -292,6 +424,54 @@
 			$("#modalAssignment #modalImagePath").attr('src', '');
 		});
 
+		$('#modalStockSave').click(function(event) {
+			var id = $("#modalStock #modalStockId").val();
+			var size_id = $("#modalStock #modalStockSize").val();
+			var stock = $("#modalStock #modalStockStock").val();
+			var is_active = $("#modalStock #modalStockIsActive").val();
+			var product_id = $("#modalStock #modalStockProductId").val();
+			if(id == '')
+			{
+				$.post('/admin/productStock/create', {
+													'_token': $('input:hidden[name=_token]').val(),
+													'size_id': size_id,
+													'product_id': product_id,
+													'stock': stock,
+													'is_active': is_active}, function(data) {														
+					if(data == 'success')
+					{
+						alert('Success');
+						$('#stocks').load(location.href + ' #stocks');
+					}
+					else
+					{
+						alert('Failed');
+						
+					}
+					$('#modalStock').modal('hide');
+				});
+			}
+			else
+			{
+				$.post('/admin/productStock/update', {
+													'_token': $('input:hidden[name=_token]').val(),
+													'id': id,
+													'stock': stock,
+													'is_active': is_active}, function(data) {	
+					if(data == 'success')
+					{
+						// white space before #name is intended
+						$('#stocks').load(location.href + ' #stocks');
+						alert('Success');
+					}
+					else
+					{
+						alert('Failed');
+					}
+					$('#modalStock').modal('hide');
+				});
+			}
+		});
 		
 		$('#modalAssignmentSave').click(function(event) {
 			var id = $("#modalAssignment #modalId").val();
@@ -308,14 +488,14 @@
 													'asset_id': assetId,
 													'assignment_type': 'PRODUCT',
 													'assignment_id': assignmentId}, function(data) {
-					if(data == 'failed')
-					{
-						alert('Failed');
-					}
-					else
+					if(data == 'successs')
 					{
 						alert('Success');
 						$('#assignments').load(location.href + ' #assignments');
+					}
+					else
+					{
+						alert('Failed');
 					}
 					$('#modalAssignment').modal('hide');
 				});
@@ -329,15 +509,16 @@
 													'asset_id': assetId,
 													'assignment_type': 'PRODUCT',
 													'assignment_id': assignmentId}, function(data) {
-					if(data == 'failed')
-					{
-						alert('Failed');
-					}
-					else
+					if(data == 'success')
 					{
 						alert('Success');
 						// white space before #name is intended
 						$('#assignments').load(location.href + ' #assignments');
+						
+					}
+					else
+					{
+						alert('Failed');
 					}
 					$('#modalAssignment').modal('hide');
 				});
@@ -351,15 +532,15 @@
 			    var id = $("#modalAssignment #modalId").val();
 			    console.log(id);
 			    $.post('/admin/assetAssignment/delete', {'id': id, '_token': $('input:hidden[name=_token]').val()}, function(data) {
-			    	if(data == 'failed')
-			    	{
-			    		alert('Failed');
-			    	}
-			    	else
+			    	if(data == 'success')
 			    	{
 			    		alert('Success');
 			    		// white space before #name is intended
 			    		$('#assignments').load(location.href + ' #assignments');
+			    	}
+			    	else
+			    	{
+			    		alert('Failed');
 			    	}
 			    	$('#modalAssignment').modal('hide');
 			    });

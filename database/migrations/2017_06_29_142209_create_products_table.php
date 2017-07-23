@@ -26,9 +26,10 @@ class CreateProductsTable extends Migration
             $table->boolean('is_sale');
             $table->decimal('sale_amount', 11, 2);
             $table->boolean('is_featured');
+            // stock ini denormalize dari productSize
             $table->tinyInteger('stock');
             $table->tinyInteger('stock_sold');
-            $table->tinyInteger('stock_held');
+            $table->tinyInteger('stock_holding');
             $table->enum('status', array('READY_STOCK', 'OUT_OF_STOCK', 'INACTIVE'));
             $table->string('created_by', 100);
             $table->string('updated_by', 100);

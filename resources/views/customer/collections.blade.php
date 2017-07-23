@@ -5,10 +5,11 @@
 
 Categories
 <ul>
-    <li>All</li>
+
+    <li class="{{ Request::segment(2) == 'all' ? 'active' : '' }}"><a href="{{route('customer.collections', 'all')}}">All</a></li>
 	@foreach($categories as $category)
 		{{-- <li>{{$category->name}} <a></a></li> --}}
-		<li class="{{ 'a' == $category->name ? 'active' : '' }}"><a href="{{route('customer.collections', $category->name)}}">{{$category->display_name}}</a></li>
+		<li class="{{ Request::segment(2) == $category->name ? 'active' : '' }}"><a href="{{route('customer.collections', $category->name)}}">{{$category->display_name}}</a></li>
 
 	@endforeach
 </ul>
@@ -21,7 +22,10 @@ Products
 @else
 <ul>
   @foreach($products as $product)
-    <li>{{$product}}</li>
+    <li>{{$product}} <br>
+    	<img src="{{asset(empty($product->thumbnail_path) ? 'http://placehold.it/200x150' :'storage/'.$product->thumbnail_path)}}"> <br>
+      {!! $product->details !!}
+    </li>
   @endforeach
 </ul>
 @endif

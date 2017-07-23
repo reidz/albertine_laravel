@@ -31,4 +31,9 @@ class AssetAssignment extends Model
         return $query->where('weight', 0)->take(1);
     }
 
+    public function scopeOrderByWeight($query)
+    {
+        return $query->orderBy('weight', 'asc');
+    }
+
 }
