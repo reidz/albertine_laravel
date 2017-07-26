@@ -40,4 +40,24 @@ class Product extends Model
     {
         return $this->attributes['stock'] - $this->attributes['stock_sold'] - $this->attributes['stock_holding'];
     }
+
+    public function scopeGetByName($query, $name)
+    {
+        return $query->where('name', $name);
+    }
+
+    public function scopeGetByType($query, $type)
+    {
+        return $query->where('type', $type);
+    }
+
+    public function scopeGetByStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
+
+    public function scopeGetByCategoryIdNotIn($query, $categoryIds)
+    {
+        return $query->whereNotIn('category_id', $categoryIds);
+    }
 }

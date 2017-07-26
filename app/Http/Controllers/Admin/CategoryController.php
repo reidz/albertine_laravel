@@ -51,10 +51,12 @@ class CategoryController extends Controller
     {
         $category = new Category;
         $this->validate($request, [
-                'name'=>'required|unique:categories',
+                'name'=>'alpha_dash|required|unique:categories',
+                'display_name'=>'alpha_num|required|unique:categories',
                 'is_active'=>'required'
             ]);
         $category->name = $request->name;
+        $category->display_name = $request->display_name;
         $category->is_active = $request->is_active;
         $category->created_by = Auth::user()->email;
         $category->updated_by = Auth::user()->email;
@@ -102,9 +104,11 @@ class CategoryController extends Controller
         $category = Category::find($id);
         $this->validate($request, [
                 'name'=>'required|unique:categories,name,'.$id,
+                'display_name'=>'required|unique:categories,display_name,'.$id,
                 'is_active'=>'required'
             ]);
         $category->name = $request->name;
+        $category->display_name = $request->display_name;
         $category->is_active = $request->is_active;
         $category->updated_by = Auth::user()->email;
         $category->save();

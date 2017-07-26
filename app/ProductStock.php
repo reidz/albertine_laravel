@@ -20,4 +20,9 @@ class ProductStock extends Model
 	{
 		return $query->where('product_id', $product_id);
 	}
+
+	public function getStockAvailableAttribute()
+    {
+        return $this->attributes['stock'] - $this->attributes['stock_sold'] - $this->attributes['stock_holding'];
+    }
 }

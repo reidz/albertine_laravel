@@ -1,4 +1,3 @@
-
 @extends('customer.layouts.app')
 
 @section('content')
@@ -22,7 +21,7 @@ Products
 @else
 <ul>
   @foreach($products as $product)
-    <li>{{$product}} <br>
+    <li>{{$product}} <br>categoryName: {{$product->category->name}}<br> <a href="{{route('customer.collections.detail', [$product->category->name, $product->name])}}">here</a><br>
     	<img src="{{asset(empty($product->thumbnail_path) ? 'http://placehold.it/200x150' :'storage/'.$product->thumbnail_path)}}"> <br>
       {!! $product->details !!}
     </li>

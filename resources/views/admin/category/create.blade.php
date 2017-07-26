@@ -32,6 +32,13 @@
 				</div>
 			</div>
 			<div class="form-group row">
+
+				<label class="col-md-1 control-label">Name</label>
+				<div class="col-md-2">
+					<input type="text" class="form-control" name="display_name" id="display_name" value="{{$category->display_name or old('display_name')}}">
+				</div>
+			</div>
+			<div class="form-group row">
 				<label class="col-md-1 control-label">Is active</label>
 				<div class="col-md-2">
 					<select class="form-control" id="is_active" name="is_active">

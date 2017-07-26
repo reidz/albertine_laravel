@@ -7,6 +7,7 @@ use App\Product;
 use App\AssetAssignment;
 use App\Asset;
 use App\Category;
+use App\ProductStock;
 use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
@@ -39,7 +40,9 @@ class PageController extends Controller
     	// $defaultCategory = $categories[0];
 
         // get all active categories
-        $categories = Category::getByIsActive(1)->get();
+        $categories = Category::getByIsActive(1)->getByNameNotIn(array("other"))->get();
+
+        $other = Category::getByName("other")->first();
     	
         // in case category not found in category, treat as all
         $found = false;
@@ -60,7 +63,7 @@ class PageController extends Controller
         if($requestCategory == 'all' || !$found)
         {
             // get products regardless category
-            $products = Product::paginate($numOfItems);
+            $products = Product::getByCategoryIdNotIn(array($other->id))->paginate($numOfItems);
         }
         else
         {
@@ -79,8 +82,24 @@ class PageController extends Controller
 
     // url-nya apa gini aja ?
     // domain/collections/{category}/{product}
-    public function product($requestProduct)
+    public function collection($requestCategory, $requestProduct)
     {
+        $product = Product::getByName($requestProduct)->firstOrFail();
+        $category = Category::findOrFail($product->category_id);
+
+        if($requestCategory != $category->name){
+            abort(403, 'Not authorized category and product');
+        }
+
+        $assetAssignments = AssetAssignment::assignmentId($product->id)->orderByWeight()->get();
+        $productStocks = ProductStock::productId($product->id)->get();
+
+        $recommendations = Product::getByStatus('READY_STOCK')->getByType('SHOES')->take(4)->get();
+
+        return view('customer.collection-detail', compact('category', 'product', 
+                                                        'assetAssignments', 'productStocks',
+                                                        'recommendations'));
+        //return $requestCategory.'-'.$requestProduct.'-'.$category->name;
         // fetch asssetAssignment, order by weight
         // set default highlighted asset, weight 0
     }

@@ -15,4 +15,14 @@ class Category extends Model
     {
         $this->attributes['name'] = strtolower($value);
     }
+
+    public function scopeGetByName($query, $name)
+	{
+		return $query->where('name', $name);
+	}
+
+	public function scopeGetByNameNotIn($query, $names)
+	{
+		return $query->whereNotIn('name', $names);
+	}
 }
