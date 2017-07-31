@@ -91,11 +91,11 @@ class ProductController extends Controller
                 'name'=>'alpha_dash|required|unique:products',
                 'colour_name'=>'alpha|required',
                 'currency'=>'required',
-                'amount'=>'required|numeric',
+                'price'=>'required|numeric',
                 'status'=>'required',
                 'is_featured'=>'required|numeric',
                 'is_sale'=>'required|numeric',
-                'sale_amount'=>'required|numeric',
+                'sale_price'=>'required|numeric',
                 // 'stock' =>'required|numeric',
                 'is_new'=>'required|numeric',
             ]);
@@ -106,9 +106,9 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->display_name = $request->display_name;
         $product->currency = $request->currency;
-        $product->amount = $request->amount;
+        $product->price = $request->price;
         $product->is_sale = $request->is_sale;
-        $product->sale_amount = $request->sale_amount;
+        $product->sale_price = $request->sale_price;
         // $product->stock = $request->stock;
         $product->status = $request->status;
         $product->is_featured = $request->is_featured;
@@ -181,11 +181,11 @@ class ProductController extends Controller
                 'name'=>'alpha_dash|required|unique:products,name,'.$id,
                 'display_name'=>'required|unique:products,display_name,'.$id,
                 'currency'=>'required',
-                'amount'=>'required|numeric',
+                'price'=>'required|numeric',
                 'status'=>'required',
                 'is_featured'=>'required|numeric',
                 'is_sale'=>'required|numeric',
-                'sale_amount'=>'required|numeric',
+                'sale_price'=>'required|numeric',
                 // 'stock' =>'required|numeric',
                 'is_new'=>'required|numeric',
             ]);
@@ -195,9 +195,9 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->display_name = $request->display_name;
         $product->currency = $request->currency;
-        $product->amount = $request->amount;
+        $product->price = $request->price;
         $product->is_sale = $request->is_sale;
-        $product->sale_amount = $request->sale_amount;
+        $product->sale_price = $request->sale_price;
         // $product->stock = $request->stock;
         $product->status = $request->status;
         $product->is_featured = $request->is_featured;

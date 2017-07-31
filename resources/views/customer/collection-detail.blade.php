@@ -7,6 +7,7 @@
 <br>
 <h3>Product</h3>
 {{$product}}
+<br>
 
 <h3>Asset assignments</h3>
 @if(empty($assetAssignments))
@@ -25,7 +26,7 @@
 @else
 	<ul>
 	@foreach($productStocks as $productStock)
-		<li>{{$productStock}}</li>
+		<li>{{$productStock}} <a href="{{route('customer.add-to-cart', [$productStock->id, 1])}}">Add to Cart</a></li>
 	@endforeach
 	</ul>
 @endif

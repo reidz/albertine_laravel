@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\AssetAssignment;
 use App\Asset;
+use App\Cart;
 use App\Category;
 use App\ProductStock;
 use Illuminate\Support\Facades\DB;
+use Session;
 
 class PageController extends Controller
 {
@@ -102,5 +104,52 @@ class PageController extends Controller
         //return $requestCategory.'-'.$requestProduct.'-'.$category->name;
         // fetch asssetAssignment, order by weight
         // set default highlighted asset, weight 0
+    }
+
+    public function addToCart(Request $request, $id, $qty)
+    {
+        $productStock = ProductStock::find($id);
+
+        $key = 'cart';
+        $oldCart = Session::has($key) ? Session::get($key) : null;
+        $cart = new Cart($oldCart);
+
+        $cart->add($productStock, $qty);
+        $request->session()->put($key, $cart);
+        // dd($request->session()->get($key));
+        return redirect()->route('customer.view-cart');
+    }
+
+    public function viewCart()
+    {
+        $key = 'cart';
+        if(!Session::has($key)){
+            return view('customer.view-cart', ['productStocks'=>null]);
+        }
+        $oldCart = Session::get($key);
+        $cart = new Cart($oldCart);
+        // return $cart->productStocks;
+        return view('customer.view-cart', ['productStocks' => $cart->productStocks, 'grandTotalPrice' => $cart->grandTotalPrice, 'currency' => $cart->currency]);
+    }
+
+    public function removeCart(Request $request)
+    {
+        $id = $request->id;
+
+        $key = 'cart';
+        // if(!Session::has($key)){
+        //     return view('customer.view-cart', ['productStocks'=>null]);
+        // // }
+        $oldCart = Session::get($key);
+        $cart = new Cart($oldCart);
+        $cart->remove($id);
+        $request->session()->put($key, $cart);
+        return "success";
+    }
+
+    public function clearCart(Request $request)
+    {
+        $key = 'cart';
+        $request->session()->pull($key, 'default');
     }
 }

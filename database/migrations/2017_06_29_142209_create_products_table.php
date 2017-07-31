@@ -22,9 +22,9 @@ class CreateProductsTable extends Migration
             $table->string('name', 100);
             $table->string('display_name', 100);
             $table->char('currency', 3);
-            $table->decimal('amount', 11, 2);
+            $table->decimal('price', 11, 2);
             $table->boolean('is_sale');
-            $table->decimal('sale_amount', 11, 2);
+            $table->decimal('sale_price', 11, 2);
             $table->boolean('is_featured');
             // stock ini denormalize dari productSize
             $table->tinyInteger('stock');

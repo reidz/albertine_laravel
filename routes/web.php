@@ -18,6 +18,10 @@
 Route::GET('/','PageController@index')->name('customer.index');
 Route::GET('collections/{category}','PageController@collections')->name('customer.collections');
 Route::GET('collections/{category}/{product}','PageController@collection')->name('customer.collections.detail');
+Route::GET('add-to-cart/{productStockId}/{qty}','PageController@addToCart')->name('customer.add-to-cart');
+Route::GET('view-cart','PageController@viewCart')->name('customer.view-cart');
+Route::POST('remove-cart','PageController@removeCart')->name('customer.remove-cart');
+Route::GET('clear-cart','PageController@clearCart')->name('customer.clear-cart');
 
 Route::GET('admin/home','AdminController@index');
 

@@ -14,11 +14,11 @@
 	}
 
 	.modal-dialog{
-	    overflow-y: initial !important
+		overflow-y: initial !important
 	}
 	.modal-body{
-	    max-height: calc(100vh - 200px);
-	    overflow-y: auto;
+		max-height: calc(100vh - 200px);
+		overflow-y: auto;
 	}
 </style>
 @endsection
@@ -92,7 +92,7 @@
 				</div>
 			</div>
 			<div class="form-group row form-inline">
-				<label class="col-md-2 control-label">Currency - Amount</label>
+				<label class="col-md-2 control-label">Currency - Price</label>
 				<div class="col-md-4">
 					<select class="form-control" id="currency" name="currency">
 						@foreach($currencyOptions as $key => $value)
@@ -104,7 +104,7 @@
 					</option>
 					@endforeach
 				</select>
-					<input type="number" class="form-control" name="amount" id="amount" value="{{$product->amount or old('amount')}}">
+					<input type="number" class="form-control" name="price" id="price" value="{{$product->price or old('price')}}">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -123,9 +123,9 @@
 				</div>
 			</div>
 			<div class="form-group row form-inline">
-				<label class="col-md-2 control-label">Sale Amount</label>
+				<label class="col-md-2 control-label">Sale Price</label>
 				<div class="col-md-4">
-					<input type="number" class="form-control" name="sale_amount" id="sale_amount" value="{{$product->sale_amount or old('sale_amount')}}">
+					<input type="number" class="form-control" name="sale_price" id="sale_price" value="{{$product->sale_price or old('sale_price')}}">
 				</div>
 			</div>
 			{{-- <div class="form-group row form-inline">
@@ -363,7 +363,7 @@
 		 $(".assignmentAlert").hide();
 
 		 $(document).on('click', '.assignments', function(event) {
-		 	var id = $(this).siblings(':hidden[name=id]').val();
+			var id = $(this).siblings(':hidden[name=id]').val();
 			var assetId = $(this).siblings(':hidden[name=asset_id]').val();
 			var assignmentId = $(this).siblings(':hidden[name=assignment_id]').val();
 			var weight = $(this).siblings(':hidden[name=weight]').val();
@@ -529,21 +529,21 @@
 			var r = confirm("Are you sure want to remove this asset assignment ?");
 			if (r == true)
 			{
-			    var id = $("#modalAssignment #modalId").val();
-			    console.log(id);
-			    $.post('/admin/assetAssignment/delete', {'id': id, '_token': $('input:hidden[name=_token]').val()}, function(data) {
-			    	if(data == 'success')
-			    	{
-			    		alert('Success');
-			    		// white space before #name is intended
-			    		$('#assignments').load(location.href + ' #assignments');
-			    	}
-			    	else
-			    	{
-			    		alert('Failed');
-			    	}
-			    	$('#modalAssignment').modal('hide');
-			    });
+				var id = $("#modalAssignment #modalId").val();
+				console.log(id);
+				$.post('/admin/assetAssignment/delete', {'id': id, '_token': $('input:hidden[name=_token]').val()}, function(data) {
+					if(data == 'success')
+					{
+						alert('Success');
+						// white space before #name is intended
+						$('#assignments').load(location.href + ' #assignments');
+					}
+					else
+					{
+						alert('Failed');
+					}
+					$('#modalAssignment').modal('hide');
+				});
 			}
 		});
 	});

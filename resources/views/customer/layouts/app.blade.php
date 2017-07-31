@@ -68,13 +68,13 @@
                     <ul class="nav navbar-nav">
                         <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="{{route('customer.index')}}">HOME <span class="sr-only">(current)</span></a></li>
                         <li class="{{ Request::is('collections', 'collections/*') ? 'active' : '' }}"><a href="{{route('customer.collections', 'all')}}">COLLECTIONS <span class="sr-only">(current)</span></a></li>
-                        <li class="{{ Request::is('how-to-order', 'how-to-order/*') ? 'active' : '' }}"><a href="{{route('product.index')}}">HOW TO ORDER</a></li>
-                        <li class="{{ Request::is('contact', 'contact/*') ? 'active' : '' }}"><a href="{{route('size.index')}}">CONTACT</a></li>
+                        <li class="{{ Request::is('how-to-order', 'how-to-order/*') ? 'active' : '' }}"><a href="#">HOW TO ORDER</a></li>
+                        <li class="{{ Request::is('contact', 'contact/*') ? 'active' : '' }}"><a href="#">CONTACT</a></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="{{ Request::is('admin/asset', 'admin/asset/*') ? 'active' : '' }}"><a href="{{route('asset.index')}}">SIGN IN/SIGN UP | <span class="sr-only">(current)</span></a></li>
-                        <li class="{{ Request::is('admin/asset', 'admin/asset/*') ? 'active' : '' }}"><a href="{{route('asset.index')}}">Cart <span class="sr-only">(current)</span></a></li>
+                        <li class="{{ Request::is('admin/asset', 'admin/asset/*') ? 'active' : '' }}"><a href="#">SIGN IN/SIGN UP | <span class="sr-only">(current)</span></a></li>
+                        <li class="{{ Request::is('admin/asset', 'admin/asset/*') ? 'active' : '' }}"><a href="{{route('customer.view-cart')}}">Cart <span class="sr-only">(current)</span></a></li>
                         {{-- <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{Auth::user()->name}} <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
@@ -113,6 +113,9 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    @section('js')
+    @show
 
 
 </body>
