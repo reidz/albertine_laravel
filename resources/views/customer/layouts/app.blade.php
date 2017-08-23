@@ -73,17 +73,36 @@
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="{{ Request::is('admin/asset', 'admin/asset/*') ? 'active' : '' }}"><a href="#">SIGN IN/SIGN UP | <span class="sr-only">(current)</span></a></li>
+
+                        @if (Auth::guest(''))
+                            <li class="{{ Request::is('admin/asset', 'admin/asset/*') ? 'active' : '' }}"><a href="{{route('login')}}">SIGN IN/SIGN UP | <span class="sr-only">(current)</span></a></li>
+                        @else
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+
                         <li class="{{ Request::is('admin/asset', 'admin/asset/*') ? 'active' : '' }}"><a href="{{route('customer.view-cart')}}">Cart <span class="sr-only">(current)</span></a></li>
-                        {{-- <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{Auth::user()->name}} <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </ul>
-                        </li> --}}
+                        @if(Session::has('cart'))
+                            <span id="nav-top-cart">{{Session::get('cart')->grandTotalQty}}</span>
+                        @endif
+
                     </ul>
                 </div>
             </div>

@@ -3,14 +3,14 @@
 @section('content')
 <h2>WELCOME BACK DARLINGS</h2>
 <h1>SIGN IN</h1>
-<form class="form-horizontal" role="form" method="POST" action="{{ route('admin.login') }}">
+<form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
     {{ csrf_field() }}
 
     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
         <div class="col-md-6">
-            <input id="email-login" type="email" class="form-control" name="email-login" value="{{ old('email-login') }}" required autofocus placeholder="EMAIL">
+            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus placeholder="EMAIL">
 
-            @if ($errors->has('email-login'))
+            @if ($errors->has('email'))
                 <span class="help-block">
                     <strong>{{ $errors->first('email') }}</strong>
                 </span>
@@ -20,11 +20,11 @@
 
     <div class="form-group{{ $errors->has('password-login') ? ' has-error' : '' }}">
         <div class="col-md-6">
-            <input id="password-login" type="password" class="form-control" name="password-login" required placeholder="PASSWORD">
+            <input id="password" type="password" class="form-control" name="password" required placeholder="PASSWORD">
 
-            @if ($errors->has('password-login'))
+            @if ($errors->has('password'))
                 <span class="help-block">
-                    <strong>{{ $errors->first('password-login') }}</strong>
+                    <strong>{{ $errors->first('password') }}</strong>
                 </span>
             @endif
         </div>
@@ -43,56 +43,25 @@
     </a>
 </form>
 
-
-
 <h2>NEW TO ALBERTINE?</h2>
 <h1>SIGN UP</h1>
 
 <h3>By creating an account in our store,<br>you will be able to move through the checkout faster,<br>view and track your orders in your account and more.</h3>
-
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
 
 <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
     {{ csrf_field() }}
 
     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
         <div class="col-md-6">
-            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus placeholder="EMAIL">
+            <input id="email-reg" type="email" class="form-control" name="email-reg" value="{{ old('email-reg') }}" required autofocus placeholder="EMAIL">
 
-            @if ($errors->has('email'))
+            @if ($errors->has('email-reg'))
                 <span class="help-block">
-                    <strong>{{ $errors->first('email') }}</strong>
+                    <strong>{{ $errors->first('email-reg') }}</strong>
                 </span>
             @endif
         </div>
     </div>
-
-{{--     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-        <div class="col-md-6">
-            <input id="password" type="password" class="form-control" name="password" required placeholder="PASSWORD">
-
-            @if ($errors->has('password'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('password') }}</strong>
-                </span>
-            @endif
-        </div>
-    </div>
-
-    <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-        <div class="col-md-6">
-            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="CONFIRM PASSWORD">
-        </div>
-    </div> --}}
 
     <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
         <div class="col-md-6">

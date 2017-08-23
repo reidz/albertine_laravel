@@ -15,13 +15,17 @@
 //     // return view('welcome');
 //     return view('index');
 // });
+Route::GET('/home', 'PageController@index')->name('home');
 Route::GET('/','PageController@index')->name('customer.index');
+
 Route::GET('collections/{category}','PageController@collections')->name('customer.collections');
 Route::GET('collections/{category}/{product}','PageController@collection')->name('customer.collections.detail');
 Route::GET('add-to-cart/{productStockId}/{qty}','PageController@addToCart')->name('customer.add-to-cart');
 Route::GET('view-cart','PageController@viewCart')->name('customer.view-cart');
 Route::POST('remove-cart','PageController@removeCart')->name('customer.remove-cart');
 Route::GET('clear-cart','PageController@clearCart')->name('customer.clear-cart');
+Route::GET('shipping-address','CheckoutController@indexShippingAddress')->name('customer.shipping-address');
+Route::POST('shipping-address','CheckoutController@saveShippingAddress')->name('customer.shipping-address-save');
 
 Route::GET('admin/home','AdminController@index');
 
@@ -48,4 +52,3 @@ Route::POST('admin/productStock/delete', 'Admin\ProductStockController@destroy')
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');

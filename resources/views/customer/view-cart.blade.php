@@ -25,11 +25,13 @@
 	<h3>Grand total: {{$currency}}-{{$grandTotalPrice}}</h3>
 </div>
 <a href="{{route('customer.collections', 'all')}}">Continue Shopping</a><br>
-<a href="#">Check Out</a>
+<a href="{{route('customer.shipping-address')}}">Check Out</a>
 @else
-	link to collections/all
+	ga ada itme di cart, link to collections/all
 @endif
 @endsection
+
+
 
 @section('js')
 <script type="text/javascript">
@@ -42,13 +44,13 @@
 			// console.log(id);
 			if(id != '')
 			{
-				$.post('/remove-cart', {
-													'_token': $('input:hidden[name=_token]').val(),
-													'id': id}, function(data) {										
+				$.post('/remove-cart', {'_token': $('input:hidden[name=_token]').val(),
+										'id': id}, function(data) {										
 					if(data == 'success')
 					{
 						alert('Success');
 						$('#cart').load(location.href + ' #cart');
+						$('#nav-top-cart').load(location.href + ' #nav-top-cart');
 					}
 					else
 					{

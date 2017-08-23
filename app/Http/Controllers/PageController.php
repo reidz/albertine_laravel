@@ -7,8 +7,10 @@ use App\Product;
 use App\AssetAssignment;
 use App\Asset;
 use App\Cart;
+use App\City;
 use App\Category;
 use App\ProductStock;
+use App\Province;
 use Illuminate\Support\Facades\DB;
 use Session;
 
@@ -152,4 +154,40 @@ class PageController extends Controller
         $key = 'cart';
         $request->session()->pull($key, 'default');
     }
+
+    // public function indexShippingAddress(Request $request)
+    // {    
+    //     // fetch provinces
+    //     // fetch cities
+
+    //     $key = 'cart';
+    //     if(!Session::has($key)){
+    //         return view('customer.view-cart', ['productStocks'=>null]);
+    //     }
+    //     $oldCart = Session::get($key);
+    //     $cart = new Cart($oldCart);
+
+    //     $options = $this->prepareCityProvinceOptions();
+    //     $provinceOptions = $options['provinceOptions'];
+    //     $cityOptions = $options['cityOptions'];
+
+    //     return view('customer.shipping-address', compact("provinceOptions", "cityOptions", "cart")); 
+    // }
+
+    // private function prepareCityProvinceOptions()
+    // {
+    //     $provinces = Province::get();
+    //     $provinceOptions = [];
+    //     foreach ($provinces as $province) {
+    //         $provinceOptions[$province->id] = $province->name;
+    //     }
+
+    //     $cities = City::get();
+    //     $cityOptions = [];
+    //     foreach ($cities as $city) {
+    //         $cityOptions[$city->id] = $city->name;
+    //     }
+
+    //     return array("provinceOptions"=>$provinceOptions, "cityOptions"=>$cityOptions);
+    // }    
 }

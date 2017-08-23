@@ -9,8 +9,10 @@ class Cart
     public $grandTotalQty = 0;
     public $grandTotalPrice = 0;
     public $deliveryFee = 0;
-    public $grandTotal = 0;
+    public $promo = 0;
+    public $grandTotal = 0; // grandTotalPrice + deliveryFee - promo
     public $currency = null;
+    
 
     public function __construct($oldCart)
     {
@@ -21,6 +23,7 @@ class Cart
             $this->deliveryFee = $oldCart->deliveryFee;
             $this->grandTotal = $oldCart->grandTotal;
             $this->currency = $oldCart->currency;
+            $this->promo = $oldCart->promo;
         }
     }
 
@@ -37,17 +40,20 @@ class Cart
                 // if($product->price != $this->productStocks[$productStock]->product->price){
                 //     throw new Exception('Price change for '.$product->display_name);
                 // }
+                $this->grandTotalQty -= $qty;
                 $storedProductStock = $this->productStocks[$productStock->id];
             }
         }
+
         $storedProductStock['qty'] += $qty;
         $storedProductStock['subTotal'] = $storedProductStock['qty'] * $productStock->product->price;
         $this->productStocks[$productStock->id] = $storedProductStock;
+        
+        // recalculate grandTotalQty, grandTotalPrice, deliveryFee, grandTotal
         $this->grandTotalQty += $storedProductStock['qty'];
         $this->grandTotalPrice = $this->grandTotalPrice + ($qty * $productStock->product->price);
-        $this->currency = $productStock->product->currency;
-
         $this->grandTotal = $this->grandTotalPrice + $this->deliveryFee;
+        $this->currency = $productStock->product->currency;
     }
 
     public function remove($id)
