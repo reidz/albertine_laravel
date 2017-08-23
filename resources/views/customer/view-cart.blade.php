@@ -24,8 +24,8 @@
 	</ul>
 	<h3>Grand total: {{$currency}}-{{$grandTotalPrice}}</h3>
 </div>
-<a href="{{route('customer.collections', 'all')}}">Continue Shopping</a><br>
-<a href="{{route('customer.shipping-address')}}">Check Out</a>
+<a class="btn btn-primary" href="{{route('customer.collections', 'all')}}">Continue Shopping</a><br>
+<a class="btn btn-primary" href="{{route('customer.shipping-address')}}">Check Out</a>
 @else
 	ga ada itme di cart, link to collections/all
 @endif

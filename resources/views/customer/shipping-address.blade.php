@@ -1,7 +1,7 @@
 @extends('customer.layouts.app')
 
 @section('content')
-<h3>Stage pointer</h3>
+@include('customer.layouts.check-out-step')
 {{-- bikin component aja ini ntar kalo misalnya udah di 2, bisa back ke 1, tapi dari 2 ga bisa ke 3 kalo belom --}}
 
 <h4>Shipping Address</h4>
@@ -58,43 +58,43 @@
 	        </div>
 	    </div>
 
-	    <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
+	    <div class="form-group{{ $errors->has('city_id') ? ' has-error' : '' }}">
 	        <div class="col-md-6">
-	            <select class="form-control" id="city" name="city">
+	            <select class="form-control" id="city_id" name="city_id">
 					@foreach($cityOptions as $key => $value)
 						<option value="{{$key}}" 
-						@if(isset($address->city))
-						{{ ($key === $address->city) ? 'selected' : '' }}
+						@if(isset($address->city_id))
+						{{ ($key === $address->city_id) ? 'selected' : '' }}
 						@endif>
 						{{$value}}
 					</option>
 					@endforeach
 				</select>
 
-	            @if ($errors->has('city'))
+	            @if ($errors->has('city_id'))
 	                <span class="help-block">
-	                    <strong>{{ $errors->first('city') }}</strong>
+	                    <strong>{{ $errors->first('city_id') }}</strong>
 	                </span>
 	            @endif
 	        </div>
 	    </div>
 
-	    <div class="form-group{{ $errors->has('province') ? ' has-error' : '' }}">
+	    <div class="form-group{{ $errors->has('province_id') ? ' has-error' : '' }}">
 	        <div class="col-md-6">
-				<select class="form-control" id="province" name="province">
+				<select class="form-control" id="province_id" name="province_id">
 					@foreach($provinceOptions as $key => $value)
 						<option value="{{$key}}" 
-						@if(isset($address->province))
-						{{ ($key === $address->province) ? 'selected' : '' }}
+						@if(isset($address->province_id))
+						{{ ($key === $address->province_id) ? 'selected' : '' }}
 						@endif>
 						{{$value}}
 					</option>
 					@endforeach
 				</select>
 
-	            @if ($errors->has('province'))
+	            @if ($errors->has('province_id'))
 	                <span class="help-block">
-	                    <strong>{{ $errors->first('province') }}</strong>
+	                    <strong>{{ $errors->first('province_id') }}</strong>
 	                </span>
 	            @endif
 	        </div>
@@ -133,6 +133,9 @@
 	    </div>
 	</form>
 </div>
+
+
+<a class="btn btn-primary" href="{{route('customer.shipping-payment')}}">SHIPPING & PAYMENT METHOD</a>
 
 @include('customer.layouts.order-summary')
 

@@ -1,0 +1,1 @@
+<span id="step-shipping">SHIPPING ADDRESS</span> - <span id="step-shipping-payment">SHIPPING & PAYMENT METHOD</span> - <span id="step-review-confirm">REVIEW & CONFIRM ORDER</span><br>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 23, 2017 at 06:03 PM
+-- Generation Time: Aug 23, 2017 at 07:37 PM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `first_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `last_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city` int(10) NOT NULL,
-  `province` int(10) NOT NULL,
+  `city_id` int(10) NOT NULL,
+  `province_id` int(10) NOT NULL,
   `postal_code` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_active` tinyint(1) NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
 -- Dumping data for table `addresses`
 --
 
-INSERT INTO `addresses` (`id`, `user_id`, `first_name`, `last_name`, `address`, `city`, `province`, `postal_code`, `phone`, `is_active`, `created_at`, `updated_at`) VALUES
+INSERT INTO `addresses` (`id`, `user_id`, `first_name`, `last_name`, `address`, `city_id`, `province_id`, `postal_code`, `phone`, `is_active`, `created_at`, `updated_at`) VALUES
 (3, 6, 'A', 'B', 'D', 151, 6, '1', '2', 0, '2017-08-23 15:42:50', '2017-08-23 16:02:14'),
 (4, 6, 'Z', 'X', 'C', 151, 6, '9', '8', 1, '2017-08-23 16:02:14', '2017-08-23 16:02:14');
 
@@ -929,7 +929,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `name`, `last_name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Ricko', 'Susanto', 'rickos89@gmail.com', '$2y$10$h.eBKWXHMBLEwRHbQ3x40.ETUnltwXRCzDr4RXIX/PFOSPCwfsLKG', 'mJlrK0oO3v0NXEsM4xelkY0yP8UBGwEdv1ZOuFZ7ykMB3PQ7EtElzJJYml6c', '2017-06-27 20:32:39', '2017-06-27 20:32:39'),
-(6, 'Ricko test', 'Susanto test', 'rickos89.test@gmail.com', '$2y$10$MY0O0pi2u/t6la6l6M5mce/jbADtra4GMuNQIqXNcjCdstn11wVzi', '3EBMJKx162JmbAK3Y18hIUDn18T0lqPrbgVeuTFXtvU29N0rS6WXb5RfRmge', '2017-08-11 03:54:52', '2017-08-11 04:29:19');
+(6, 'Ricko test', 'Susanto test', 'rickos89.test@gmail.com', '$2y$10$MY0O0pi2u/t6la6l6M5mce/jbADtra4GMuNQIqXNcjCdstn11wVzi', 'olKLlbGnHIt6MPflEWlGjPODkLjFtxvAyj7WVmPNRj40Cv0kBhhbglIjxEFb', '2017-08-11 03:54:52', '2017-08-11 04:29:19');
 
 --
 -- Indexes for dumped tables

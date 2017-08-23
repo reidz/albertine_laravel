@@ -26,6 +26,7 @@ Route::POST('remove-cart','PageController@removeCart')->name('customer.remove-ca
 Route::GET('clear-cart','PageController@clearCart')->name('customer.clear-cart');
 Route::GET('shipping-address','CheckoutController@indexShippingAddress')->name('customer.shipping-address');
 Route::POST('shipping-address','CheckoutController@saveShippingAddress')->name('customer.shipping-address-save');
+Route::GET('shipping-payment','CheckoutController@indexShippingPayment')->name('customer.shipping-payment');
 
 Route::GET('admin/home','AdminController@index');
 

@@ -17,7 +17,7 @@ class CheckoutController extends Controller
 	public function __construct()
     {
         $this->middleware('auth');
-
+        $this->middleware('check.cart');
     }
 
     public function indexShippingAddress(Request $request)
@@ -40,8 +40,8 @@ class CheckoutController extends Controller
     	    'first_name'=>'required|max:100',
     	    'last_name'=>'required|max:100',
     	    'address'=>'required|max:100',
-    	    'city'=>'required|numeric|min:1',
-    	    'province'=>'required|numeric|min:1',
+    	    'city_id'=>'required|numeric|min:1',
+    	    'province_id'=>'required|numeric|min:1',
     	    'postal_code'=>'required|numeric',
     	    'phone'=>'required|max:100',
     	    ]);
@@ -73,13 +73,58 @@ class CheckoutController extends Controller
     	}
     }
 
+    public function indexShippingPayment(Request $request)
+    {
+        $cart = $this->prepareOrderSummary($request, true);
+
+       // fetch first active customer address 
+        $address = Address::isMain()->first();
+
+        // call checking shipping-payment fee
+
+        return view('customer.shipping-payment', compact("provinceOptions", "cityOptions", "cart", "address")); 
+    }
+
+    private function cost()
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://pro.rajaongkir.com/api/cost",
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          // coba tarik by origin subdistrict and destination subdistrict
+          CURLOPT_POSTFIELDS => "origin=501&originType=city&destination=574&destinationType=subdistrict&weight=1700&courier=jne",
+          // CURLOPT_POSTFIELDS => "origin=501&originType=city&destination=574&destinationType=subdistrict&weight=1700&courier=jne",
+          CURLOPT_HTTPHEADER => array(
+            "content-type: application/x-www-form-urlencoded",
+            "key: your-api-key"
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+          echo "cURL Error #:" . $err;
+        } else {
+          echo $response;
+        }
+    }
+
     private function setAddress($request, $address, $user_id)
     {
     	$address->first_name = $request->first_name;
     	$address->last_name = $request->last_name;
     	$address->address = $request->address;
-    	$address->city = $request->city;
-    	$address->province = $request->province;
+    	$address->city_id = $request->city_id;
+    	$address->province_id = $request->province_id;
     	$address->postal_code = $request->postal_code;
     	$address->phone = $request->phone;
     	$address->is_active = true;
@@ -106,11 +151,6 @@ class CheckoutController extends Controller
 
     private function prepareOrderSummary($request, $init)
     {
-    	$key = 'cart';
-        if(!Session::has($key)){
-            return view('customer.view-cart', ['productStocks'=>null]);
-        }
-
         $key = 'cart';
         $oldCart = Session::get($key);
         $cart = new Cart($oldCart);
@@ -127,4 +167,43 @@ class CheckoutController extends Controller
         }
         return $cart;
     }
+
+    private function importSubDistrict()
+  {
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => "https://pro.rajaongkir.com/api/subdistrict",
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 30,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "GET",
+      CURLOPT_HTTPHEADER => array(
+        "key: "."5ecb3bba224692d4978c7f56d744b6fb"
+        ),
+      ));
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    if ($err) {
+      echo "cURL Error #:" . $err;
+    }
+    else{
+      $json = json_decode($response, true);
+
+      echo $json;
+      // foreach($json['rajaongkir']['results'] as $item)
+      // {
+      //   $province = new Province;
+      //   $province->id = $item['province_id'];
+      //   $province->name = $item['province'];
+      //   $province->save();
+      // }
+    }
+  }
 }
