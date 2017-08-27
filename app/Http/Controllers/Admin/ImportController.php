@@ -126,4 +126,76 @@ class ImportController extends Controller
             // [city_id] => 1 [province_id] => 21 [province] => Nanggroe Aceh Darussalam (NAD) [type] => Kabupaten [city_name] => Aceh Barat [postal_code] => 23681
     }
   }
+
+    private function importSubDistrict()
+    {
+  // iterate city
+      $cities = City::get();
+
+      $i = 500;
+      $count = 50;
+
+
+      foreach ($cities as $city) {
+        if($city->id < $i)
+          continue;
+
+        if($city->id < $i+$count)
+        {
+          $this->storeSubDistrict($city->id);
+        }
+        else
+        {
+          echo 'done '.$i.' - '.$count;
+          break;
+        }
+      }
+      
+      
+    }
+
+    private function storeSubDistrict($cityId)
+    {
+      $curl = curl_init();
+
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://pro.rajaongkir.com/api/subdistrict?city=".$cityId,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => array(
+          "key: "."5ecb3bba224692d4978c7f56d744b6fb"
+          ),
+        ));
+
+      curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+      $response = curl_exec($curl);
+      $err = curl_error($curl);
+
+      curl_close($curl);
+
+      if ($err) {
+        echo "cURL Error #:" . $err;
+      } else {
+    // insert 
+        $json = json_decode($response, true);
+
+        foreach($json['rajaongkir']['results'] as $item)
+        {
+          $subdistrict = new Subdistrict;
+          $subdistrict->id = $item['subdistrict_id'];
+          $subdistrict->city_id = $item['city_id'];
+          $subdistrict->city = $item['city'];
+          $subdistrict->province_id = $item['province_id'];
+          $subdistrict->province = $item['province'];
+          $subdistrict->type = $item['type'];
+          $subdistrict->subdistrict_name = $item['subdistrict_name'];
+          $subdistrict->save();
+        }
+      }
+    } 
 }

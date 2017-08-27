@@ -58,6 +58,27 @@
 	        </div>
 	    </div>
 
+	    <div class="form-group{{ $errors->has('province_id') ? ' has-error' : '' }}">
+	        <div class="col-md-6">
+				<select class="form-control" id="province_id" name="province_id">
+					@foreach($provinceOptions as $key => $value)
+						<option value="{{$key}}" 
+						@if(isset($address->province_id))
+						{{ ($key === $address->province_id) ? 'selected' : '' }}
+						@endif>
+						{{$value}}
+					</option>
+					@endforeach
+				</select>
+
+	            @if ($errors->has('province_id'))
+	                <span class="help-block">
+	                    <strong>{{ $errors->first('province_id') }}</strong>
+	                </span>
+	            @endif
+	        </div>
+	    </div>
+
 	    <div class="form-group{{ $errors->has('city_id') ? ' has-error' : '' }}">
 	        <div class="col-md-6">
 	            <select class="form-control" id="city_id" name="city_id">
@@ -79,22 +100,22 @@
 	        </div>
 	    </div>
 
-	    <div class="form-group{{ $errors->has('province_id') ? ' has-error' : '' }}">
+	    <div class="form-group{{ $errors->has('subdistrict_id') ? ' has-error' : '' }}">
 	        <div class="col-md-6">
-				<select class="form-control" id="province_id" name="province_id">
-					@foreach($provinceOptions as $key => $value)
+				<select class="form-control" id="subdistrict_id" name="subdistrict_id">
+					@foreach($subdistrictOptions as $key => $value)
 						<option value="{{$key}}" 
-						@if(isset($address->province_id))
-						{{ ($key === $address->province_id) ? 'selected' : '' }}
+						@if(isset($address->subdistrict_id))
+						{{ ($key === $address->subdistrict_id) ? 'selected' : '' }}
 						@endif>
 						{{$value}}
 					</option>
 					@endforeach
 				</select>
 
-	            @if ($errors->has('province_id'))
+	            @if ($errors->has('subdistrict_id'))
 	                <span class="help-block">
-	                    <strong>{{ $errors->first('province_id') }}</strong>
+	                    <strong>{{ $errors->first('subdistrict_id') }}</strong>
 	                </span>
 	            @endif
 	        </div>
@@ -127,15 +148,14 @@
 	    <div class="form-group">
 	        <div class="col-md-8 col-md-offset-4">
 	            <button type="submit" class="btn btn-primary">
-	                SAVE ADDRESS
+	                SHIPPING & PAYMENT METHOD
 	            </button>
 	        </div>
 	    </div>
 	</form>
 </div>
 
-
-<a class="btn btn-primary" href="{{route('customer.shipping-payment')}}">SHIPPING & PAYMENT METHOD</a>
+{{-- <a class="btn btn-primary" href="{{route('customer.shipping-payment')}}">SHIPPING & PAYMENT METHOD</a> --}}
 
 @include('customer.layouts.order-summary')
 

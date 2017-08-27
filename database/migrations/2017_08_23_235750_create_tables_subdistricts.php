@@ -14,7 +14,8 @@ class CreateTablesSubdistricts extends Migration
     public function up()
     {
         Schema::create('subdistricts', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id');
+            $table->primary('id');
             $table->integer('province_id'); // province_id
             $table->string('province', 100);
             $table->integer('city_id'); // province_id
