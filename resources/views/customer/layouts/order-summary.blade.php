@@ -18,7 +18,7 @@
 	</ul>
 	SUBTOTAL {{$cart->currency}}-{{$cart->grandTotalPrice}}<br>
 	PROMO {{$cart->currency}}-{{$cart->promo}}<br>
-	SHIPPING {{$cart->currency}}-{{$cart->deliveryFee}}<br>
+	SHIPPING {{$cart->currency}}-{{$cart->shippingFee}}<br>
 	TOTAL {{$cart->currency}}-{{$cart->grandTotal}}<br>
 </div>
 @endif

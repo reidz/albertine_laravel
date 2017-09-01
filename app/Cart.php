@@ -8,9 +8,9 @@ class Cart
     public $productStocks = null;
     public $grandTotalQty = 0;
     public $grandTotalPrice = 0;
-    public $deliveryFee = 0;
+    public $shippingFee = 0;
     public $promo = 0;
-    public $grandTotal = 0; // grandTotalPrice + deliveryFee - promo
+    public $grandTotal = 0; // grandTotalPrice + shippingFee - promo
     public $currency = null;
     
 
@@ -20,7 +20,7 @@ class Cart
             $this->productStocks = $oldCart->productStocks;
             $this->grandTotalQty = $oldCart->grandTotalQty;
             $this->grandTotalPrice = $oldCart->grandTotalPrice;
-            $this->deliveryFee = $oldCart->deliveryFee;
+            $this->shippingFee = $oldCart->shippingFee;
             $this->grandTotal = $oldCart->grandTotal;
             $this->currency = $oldCart->currency;
             $this->promo = $oldCart->promo;
@@ -49,10 +49,10 @@ class Cart
         $storedProductStock['subTotal'] = $storedProductStock['qty'] * $productStock->product->price;
         $this->productStocks[$productStock->id] = $storedProductStock;
         
-        // recalculate grandTotalQty, grandTotalPrice, deliveryFee, grandTotal
+        // recalculate grandTotalQty, grandTotalPrice, shippingFee, grandTotal
         $this->grandTotalQty += $storedProductStock['qty'];
         $this->grandTotalPrice = $this->grandTotalPrice + ($qty * $productStock->product->price);
-        $this->grandTotal = $this->grandTotalPrice + $this->deliveryFee;
+        $this->grandTotal = $this->grandTotalPrice + $this->shippingFee;
         $this->currency = $productStock->product->currency;
     }
 
@@ -63,5 +63,12 @@ class Cart
         $this->grandTotalPrice -= $storedProductStock['subTotal'];
         $this->grandTotal -= $storedProductStock['subTotal'];
         unset($this->productStocks[$id]);
+    }
+
+    public function setshippingFee($shippingFee)
+    {
+        $this->grandTotal -= $this->shippingFee;
+        $this->shippingFee = $shippingFee;
+        $this->grandTotal += $this->shippingFee;
     }
 }

@@ -91,22 +91,74 @@ class CheckoutController extends Controller
       $costs = $this->cost($origin, $destination, $weight);
       $deliveryProvider = $costs[0]['name'];
       // return $costs[0]['costs'];
-      $deliveryOptions = $this->prepareDeliveryOptions($costs[0]['costs']);
+      $shippingOptions = $this->prepareShippingOptions($costs[0]['costs']);
 
-      return view('customer.shipping-payment', compact("deliveryOptions", "cart", "address"));
+      // save reservation ?
+
+      return view('customer.shipping-payment', compact("shippingOptions", "cart", "address"));
     }
 
-    private function prepareDeliveryOptions($costs)
+    public function reviewOrder(Request $request)
     {
-      $deliveryOptions = [];
+      $this->validate($request, [
+          'shipping'=>'required'
+          ]);
+
+      $shippings = explode('#',$request->shipping);
+      // CTC#JNE City Courier#9000#1-2#
+      // 0 service, 1 description, 2 price, 3 etd, 4 note
+      // JNE City Courier (1-2 days) - IDR 9000
+      $shipping = $shippings[1].' ('.$shippings[3].' days)'.' - IDR '.$shippings[2];
+
+      // revise cart delivery fee with selected fee
+      $this->setShippingFee($request, $shippings[2]);
+      
+      $cart = $this->prepareOrderSummary($request, true);
+      $address = Address::isMain()->first();
+      
+      return view('customer.review-order', compact("cart", "address", "shipping"));
+    }
+
+    public function confirmOrder(Request $request)
+    {
+      // check stock
+      // if stock
+      // redirect to page view-cart, state which 1 is out of stock, hope customer pick another 1
+      // $cart = $this->prepareOrderSummary($request, true);
+      return 'confirm-order';
+
+      // check price change
+      // check harga delivery ganti ga
+      // if price
+      // redirect to page shipping-paymet, message price change, state which price changed
+      
+
+      // else
+      // store reservation
+      // add used productStock
+    }
+
+    private function setShippingFee($request, $shippingFee)
+    {
+      $key = 'cart';
+      $oldCart = Session::has($key) ? Session::get($key) : null;
+      $cart = new Cart($oldCart);
+
+      $cart->setShippingFee($shippingFee);
+      $request->session()->put($key, $cart);
+    }
+
+    private function prepareShippingOptions($costs)
+    {
+      $shippingOptions = [];
       foreach ($costs as $cost ){
         $item = $cost['cost'][0];
           $key = $cost['service'].'#'.$cost['description'].'#'.$item['value'].'#'.$item['etd'].'#'.$item['note'];
-          $deliveryOptions[$key] = $cost['description'].' '.
+          $shippingOptions[$key] = $cost['description'].' '.
                                   '('.$item['etd'].' days) - IDR '.
                                   $item['value'];
       }
-      return $deliveryOptions;
+      return $shippingOptions;
     }
 
     private function cost($origin, $destination, $weight)
