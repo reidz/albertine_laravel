@@ -3,7 +3,7 @@
 @section('content')
 @include('customer.layouts.check-out-step')
 
-<form class="form-horizontal" role="form" method="POST" action="{{ route('customer.shipping-address-save') }}">
+<form class="form-horizontal" role="form" method="POST" action="{{ route('customer.confirm-order') }}">
 
 <h4>SHIPPING ADDRESS</h4>
 <div id="address-form">
@@ -68,7 +68,8 @@
 
 <h4>SHIPPING METHOD</h4>
 JNE <br>
-{{$shipping}}
+{{$shippingDescription}}
+<input type="hidden" name="shipping" value="{{$shipping}}">
 </form>
 
 {{-- form --}}

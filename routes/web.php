@@ -28,6 +28,8 @@ Route::GET('shipping-address','CheckoutController@indexShippingAddress')->name('
 Route::POST('shipping-address','CheckoutController@saveShippingAddress')->name('customer.shipping-address-save');
 Route::GET('shipping-payment','CheckoutController@indexShippingPayment')->name('customer.shipping-payment');
 Route::POST('review-order','CheckoutController@reviewOrder')->name('customer.review-order');
+Route::POST('confirm-order','CheckoutController@confirmOrder')->name('customer.confirm-order');
+
 
 Route::GET('admin/home','AdminController@index');
 

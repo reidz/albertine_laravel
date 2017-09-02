@@ -30,11 +30,12 @@ class CreateOrderShippingsTable extends Migration
             $table->string('service', 100);
             $table->string('description', 100);
             $table->char('currency', 3);
+            $table->decimal('price', 11, 2);
             $table->string('etd', 100);
-            $table->string('note', 100);
+            $table->string('note', 100)->nullable();;
             $table->integer('total_weight');
-            $table->string('receipt_no', 100);
-            $table->string('receipt_note', 500);
+            $table->string('receipt_no', 100)->nullable();;
+            $table->string('receipt_note', 500)->nullable();;
             $table->string('created_by', 100);
             $table->string('updated_by', 100);
             $table->timestamps();

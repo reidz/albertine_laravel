@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 27, 2017 at 01:55 PM
+-- Generation Time: Sep 02, 2017 at 10:16 AM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
 
 INSERT INTO `addresses` (`id`, `user_id`, `first_name`, `last_name`, `address`, `subdistrict_id`, `city_id`, `province_id`, `postal_code`, `phone`, `is_active`, `created_at`, `updated_at`) VALUES
 (3, 6, 'A', 'B', 'D', 2088, 151, 6, '1', '2', 0, '2017-08-23 15:42:50', '2017-08-23 16:02:14'),
-(4, 6, 'Z', 'X', 'C', 2088, 151, 6, '9', '8', 1, '2017-08-23 16:02:14', '2017-08-27 11:54:41');
+(4, 6, 'Z', 'X', 'C', 2088, 151, 6, '9', '8', 1, '2017-08-23 16:02:14', '2017-09-02 08:14:25');
 
 -- --------------------------------------------------------
 
@@ -719,7 +719,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `id` int(10) unsigned NOT NULL,
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `migrations`
@@ -738,7 +738,119 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (14, '2017_08_11_114605_create_addresses_table', 8),
 (15, '2017_08_11_141351_create_provinces_table', 9),
 (16, '2017_08_11_145822_create_cities_table', 10),
-(17, '2017_08_23_235750_create_tables_subdistricts', 11);
+(17, '2017_08_23_235750_create_tables_subdistricts', 11),
+(18, '2017_09_01_141625_create_orders_table', 12),
+(19, '2017_09_01_143011_create_order_shippings_table', 13),
+(20, '2017_09_01_144218_create_order_items_table', 14);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` int(10) unsigned NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `user_first_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_last_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `currency` char(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `grand_total_qty` int(11) NOT NULL,
+  `grand_total_price` decimal(11,2) NOT NULL,
+  `shipping_price` decimal(11,2) NOT NULL,
+  `promo_price` decimal(11,2) NOT NULL,
+  `grand_total` decimal(11,2) NOT NULL,
+  `status` enum('PAYMENT_CONFIRMATION','PAID','CANCELLED','EXPIRED','SHIPPED') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reason` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_by` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `updated_by` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `user_first_name`, `user_last_name`, `user_email`, `currency`, `grand_total_qty`, `grand_total_price`, `shipping_price`, `promo_price`, `grand_total`, `status`, `reason`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(4, 6, 'Ricko test', 'Susanto test', 'rickos89.test@gmail.com', 'IDR', 2, '200000.00', '18000.00', '0.00', '218000.00', 'PAYMENT_CONFIRMATION', '', 'rickos89.test@gmail.com', 'rickos89.test@gmail.com', '2017-09-02 08:15:26', '2017-09-02 08:15:26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE IF NOT EXISTS `order_items` (
+  `id` int(10) unsigned NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `type` enum('SHOES','UPSELL') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `colour_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `details` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `currency` char(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` decimal(11,2) NOT NULL,
+  `is_sale` tinyint(1) NOT NULL,
+  `sale_price` decimal(11,2) NOT NULL,
+  `is_featured` tinyint(1) NOT NULL,
+  `is_new` tinyint(1) NOT NULL,
+  `size_id` int(11) NOT NULL,
+  `size_metric` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `size_value` decimal(5,2) NOT NULL,
+  `count` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `type`, `product_id`, `name`, `display_name`, `colour_name`, `details`, `currency`, `price`, `is_sale`, `sale_price`, `is_featured`, `is_new`, `size_id`, `size_metric`, `size_value`, `count`, `created_at`, `updated_at`) VALUES
+(5, 4, 'SHOES', 1, 'sepatu-2', 'sepatu 2', 'Tan', 'line1<br>line2', 'IDR', '100000.00', 0, '90001.00', 1, 1, 3, 'EU', '38.00', 1, '2017-09-02 08:15:26', '2017-09-02 08:15:26'),
+(6, 4, 'SHOES', 1, 'sepatu-2', 'sepatu 2', 'Tan', 'line1<br>line2', 'IDR', '100000.00', 0, '90001.00', 1, 1, 2, 'EU', '37.00', 1, '2017-09-02 08:15:26', '2017-09-02 08:15:26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_shippings`
+--
+
+CREATE TABLE IF NOT EXISTS `order_shippings` (
+  `id` int(10) unsigned NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `first_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city_id` int(11) NOT NULL,
+  `province_id` int(11) NOT NULL,
+  `subdistrict_id` int(11) NOT NULL,
+  `postal_code` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `service` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `currency` char(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` decimal(11,2) NOT NULL,
+  `etd` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `total_weight` int(11) NOT NULL,
+  `receipt_no` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `receipt_note` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_by` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `updated_by` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `order_shippings`
+--
+
+INSERT INTO `order_shippings` (`id`, `order_id`, `first_name`, `last_name`, `address`, `city_id`, `province_id`, `subdistrict_id`, `postal_code`, `phone`, `service`, `description`, `currency`, `price`, `etd`, `note`, `total_weight`, `receipt_no`, `receipt_note`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 4, 'Z', 'X', 'C', 151, 6, 2088, '9', '8', 'CTC', 'JNE City Courier', 'IDR', '18000.00', '1-2', '', 2000, NULL, NULL, 'rickos89.test@gmail.com', 'rickos89.test@gmail.com', '2017-09-02 08:15:26', '2017-09-02 08:15:26');
 
 -- --------------------------------------------------------
 
@@ -787,7 +899,7 @@ CREATE TABLE IF NOT EXISTS `products` (
 --
 
 INSERT INTO `products` (`id`, `category_id`, `type`, `name`, `colour_name`, `display_name`, `details`, `currency`, `price`, `is_sale`, `sale_price`, `stock`, `stock_sold`, `stock_held`, `status`, `is_featured`, `is_new`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 3, 'SHOES', 'sepatu-2', 'Tan', 'sepatu 2', 'line1<br>line2', 'IDR', '100000.00', 0, '90001.00', 5, 3, 0, 'OUT_OF_STOCK', 1, 1, 'rickos89@gmail.com', 'rickos89@gmail.com', '2017-06-29 07:58:51', '2017-07-23 11:00:54'),
+(1, 3, 'SHOES', 'sepatu-2', 'Tan', 'sepatu 2', 'line1<br>line2', 'IDR', '100000.00', 0, '90001.00', 5, 3, 0, 'READY_STOCK', 1, 1, 'rickos89@gmail.com', 'rickos89@gmail.com', '2017-06-29 07:58:51', '2017-07-23 11:00:54'),
 (2, 1, 'SHOES', 'sepatu-1', 'Red', 'Sepatu 1', '', 'IDR', '100000.00', 0, '0.00', 0, 0, 0, 'READY_STOCK', 0, 0, 'rickos89@gmail.com', 'rickos89@gmail.com', '2017-06-29 07:59:01', '2017-06-29 07:59:01'),
 (3, 8, 'UPSELL', 'foam', 'Yellow', 'Foam', '', 'IDR', '100000.00', 0, '0.00', 0, 0, 0, 'READY_STOCK', 0, 0, 'rickos89@gmail.com', 'rickos89@gmail.com', '2017-06-29 07:59:20', '2017-07-26 15:59:40'),
 (4, 7, 'SHOES', 'somename', 'Red', 'Somename', '', 'IDR', '1000.00', 0, '0.00', 0, 0, 0, 'READY_STOCK', 0, 0, 'rickos89@gmail.com', 'rickos89@gmail.com', '2017-07-16 08:08:36', '2017-07-16 08:08:36'),
@@ -822,8 +934,8 @@ CREATE TABLE IF NOT EXISTS `product_stocks` (
 --
 
 INSERT INTO `product_stocks` (`id`, `product_id`, `size_id`, `stock`, `stock_sold`, `stock_holding`, `is_active`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 1, 3, 30, 0, 0, 1, 'rickos89@gmail.com', 'rickos89@gmail.com', '2017-07-23 13:20:38', '2017-07-23 13:55:14'),
-(2, 1, 2, 22, 0, 0, 1, 'rickos89@gmail.com', 'rickos89@gmail.com', '2017-07-23 13:21:42', '2017-07-23 13:21:42'),
+(1, 1, 3, 30, 0, 1, 1, 'rickos89@gmail.com', 'rickos89@gmail.com', '2017-07-23 13:20:38', '2017-09-02 08:15:26'),
+(2, 1, 2, 22, 0, 1, 1, 'rickos89@gmail.com', 'rickos89@gmail.com', '2017-07-23 13:21:42', '2017-09-02 08:15:26'),
 (3, 7, 1, 2, 0, 0, 1, 'rickos89@gmail.com', 'rickos89@gmail.com', '2017-07-26 15:37:30', '2017-07-26 15:37:30'),
 (4, 7, 2, 1, 0, 0, 1, 'rickos89@gmail.com', 'rickos89@gmail.com', '2017-07-26 15:37:39', '2017-07-26 15:37:39');
 
@@ -8023,6 +8135,24 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `order_shippings`
+--
+ALTER TABLE `order_shippings`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `password_resets`
 --
 ALTER TABLE `password_resets`
@@ -8103,7 +8233,22 @@ ALTER TABLE `colours`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=18;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `order_shippings`
+--
+ALTER TABLE `order_shippings`
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `products`
 --
