@@ -21,6 +21,11 @@ class ProductStock extends Model
 		return $query->where('product_id', $product_id);
 	}
 
+    public function scopeSizeId($query, $size_id)
+    {
+        return $query->where('size_id', $size_id);
+    }
+
 	public function getStockAvailableAttribute()
     {
         return $this->attributes['stock'] - $this->attributes['stock_sold'] - $this->attributes['stock_holding'];

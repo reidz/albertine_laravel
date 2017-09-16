@@ -45,6 +45,8 @@ Route::resource('admin/size', 'Admin\SizeController');
 Route::resource('admin/colour', 'Admin\ColourController');
 Route::resource('admin/product', 'Admin\ProductController');
 Route::resource('admin/asset', 'Admin\AssetController');
+Route::resource('admin/order', 'Admin\OrderController');
+Route::POST('admin/order/search', 'Admin\OrderController@search')->name('order.search');
 
 Route::POST('admin/assetAssignment/create', 'Admin\AssetAssignmentController@create')->name('assetAssignment.create');;
 Route::POST('admin/assetAssignment/update', 'Admin\AssetAssignmentController@update')->name('assetAssignment.update');;
@@ -53,6 +55,7 @@ Route::POST('admin/assetAssignment/delete', 'Admin\AssetAssignmentController@des
 Route::POST('admin/productStock/create', 'Admin\ProductStockController@create')->name('productStock.create');
 Route::POST('admin/productStock/update', 'Admin\ProductStockController@update')->name('productStock.update');
 Route::POST('admin/productStock/delete', 'Admin\ProductStockController@destroy')->name('productStock.destroy');
+
 
 Auth::routes();
 
