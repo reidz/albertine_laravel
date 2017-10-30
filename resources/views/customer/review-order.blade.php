@@ -65,7 +65,7 @@
 	    </div>
 	
 </div>
-
+ada
 <h4>SHIPPING METHOD</h4>
 JNE <br>
 {{$shippingDescription}}

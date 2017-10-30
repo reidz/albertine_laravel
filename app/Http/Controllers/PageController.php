@@ -32,8 +32,8 @@ class PageController extends Controller
     		array_push($featuredProducts, $featuredProduct);
     		array_push($featuredProducts, $featuredProduct);
     	}
-    	// return $featuredProducts;
-    	return view('customer.index' , compact('featuredProducts'));
+    	// return view('customer.index' , compact('featuredProducts'));
+        return response()->json(['featuredProducts' => $featuredProducts]); 
     }
 
     public function collections($requestCategory)
@@ -80,8 +80,8 @@ class PageController extends Controller
             $product->thumbnail_path = $asset['thumbnail_path'];
         }
 
-        // return $products;
-        return view('customer.collections', compact('categories', 'products'));
+        // return view('customer.collections', compact('categories', 'products'));
+        return response()->json(['categories' => $categories, 'products' => $products]); 
     }
 
     // url-nya apa gini aja ?
@@ -99,10 +99,13 @@ class PageController extends Controller
         $productStocks = ProductStock::productId($product->id)->get();
 
         $recommendations = Product::getByStatus('READY_STOCK')->getByType('SHOES')->take(4)->get();
+        // return view('customer.collection-detail', compact('category', 'product', 
+        //                                                 'assetAssignments', 'productStocks',
+        //                                                 'recommendations'));
 
-        return view('customer.collection-detail', compact('category', 'product', 
-                                                        'assetAssignments', 'productStocks',
-                                                        'recommendations'));
+        return response()->json(['category' => $category, 'product' => $product, 
+                                    'assetAssignments' => $assetAssignments, 'productStocks' => $productStocks , 
+                                    'recommendations' => $recommendations]);  
         //return $requestCategory.'-'.$requestProduct.'-'.$category->name;
         // fetch asssetAssignment, order by weight
         // set default highlighted asset, weight 0
@@ -119,7 +122,8 @@ class PageController extends Controller
         $cart->add($productStock, $qty);
         $request->session()->put($key, $cart);
         // dd($request->session()->get($key));
-        return redirect()->route('customer.view-cart');
+        // return route('customer.view-cart');
+        return response()->json(['route' => $route('customer.view-cart')]);
     }
 
     public function viewCart()
@@ -132,6 +136,9 @@ class PageController extends Controller
         $cart = new Cart($oldCart);
         // return $cart->productStocks;
         return view('customer.view-cart', ['productStocks' => $cart->productStocks, 'grandTotalPrice' => $cart->grandTotalPrice, 'currency' => $cart->currency]);
+        return response()->json(['category' => $category, 'product' => $product, 
+                                    'assetAssignments' => $assetAssignments, 'productStocks' => $productStocks , 
+                                    'recommendations' => $recommendations]);
     }
 
     public function removeCart(Request $request)
@@ -146,13 +153,14 @@ class PageController extends Controller
         $cart = new Cart($oldCart);
         $cart->remove($id);
         $request->session()->put($key, $cart);
-        return "success";
+        return response()->json(['success' => 'success']);
     }
 
     public function clearCart(Request $request)
     {
         $key = 'cart';
         $request->session()->pull($key, 'default');
+        return response()->json(['success' => 'success']);
     }
 
     // public function indexShippingAddress(Request $request)

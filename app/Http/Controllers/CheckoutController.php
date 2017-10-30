@@ -45,7 +45,12 @@ class CheckoutController extends Controller
        // fetch first active customer address 
         $address = Address::isMain()->first();
 
-        return view('customer.shipping-address', compact("provinceOptions", "cityOptions", "subdistrictOptions", "cart", "address")); 
+        // return view('customer.shipping-address', compact("provinceOptions", "cityOptions", "subdistrictOptions", "cart", "address"));
+        return response()->json(['provinceOptions' => $provinceOptions, 
+                                  'cityOptions' => $cityOptions, 
+                                  'subdistrictOptions' => $provinceOptions, 
+                                  'cart' => $cart, 
+                                  'address' => $address]); 
     }
 
     public function saveShippingAddress(Request $request)
@@ -102,7 +107,10 @@ class CheckoutController extends Controller
 
       // save reservation ?
 
-      return view('customer.shipping-payment', compact("shippingOptions", "cart", "address"));
+      // return view('customer.shipping-payment', compact("shippingOptions", "cart", "address"));
+      return response()->json(['shippingOptions' => $shippingOptions, 
+                                  'cart' => $cart, 
+                                  'address' => $address]); 
     }
 
     public function reviewOrder(Request $request)
@@ -124,7 +132,11 @@ class CheckoutController extends Controller
       $cart = $this->prepareOrderSummary($request, true);
       $address = Address::isMain()->first();
       
-      return view('customer.review-order', compact("cart", "address", "shipping", "shippingDescription"));
+      // return view('customer.review-order', compact("cart", "address", "shipping", "shippingDescription"));
+      return response()->json(['cart' => $cart, 
+                                  'address' => $address, 
+                                  'shipping' => $shipping,
+                                  'shippingDescription' => $shippingDescription]); 
     }
 
     public function confirmOrder(Request $request)
@@ -346,7 +358,9 @@ class CheckoutController extends Controller
       // 3. email customer
       // 4. email albertine admin
 
-      return 'sucess-page';
+
+      // return 'sucess-page';
+      return response()->json(['route' => 'sucess-page']);
     }
 
     private function setShippingFee($request, $shippingFee)
