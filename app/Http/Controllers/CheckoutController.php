@@ -46,7 +46,8 @@ class CheckoutController extends Controller
         $address = Address::isMain()->first();
 
         // return view('customer.shipping-address', compact("provinceOptions", "cityOptions", "subdistrictOptions", "cart", "address"));
-        return response()->json(['provinceOptions' => $provinceOptions, 
+        return response()->json(['assetBaseUrl' => asset('storage'),
+                              'provinceOptions' => $provinceOptions, 
                                   'cityOptions' => $cityOptions, 
                                   'subdistrictOptions' => $provinceOptions, 
                                   'cart' => $cart, 
@@ -108,7 +109,8 @@ class CheckoutController extends Controller
       // save reservation ?
 
       // return view('customer.shipping-payment', compact("shippingOptions", "cart", "address"));
-      return response()->json(['shippingOptions' => $shippingOptions, 
+      return response()->json(['assetBaseUrl' => asset('storage'),
+                              'shippingOptions' => $shippingOptions, 
                                   'cart' => $cart, 
                                   'address' => $address]); 
     }
@@ -133,7 +135,8 @@ class CheckoutController extends Controller
       $address = Address::isMain()->first();
       
       // return view('customer.review-order', compact("cart", "address", "shipping", "shippingDescription"));
-      return response()->json(['cart' => $cart, 
+      return response()->json(['assetBaseUrl' => asset('storage'),
+                              'cart' => $cart, 
                                   'address' => $address, 
                                   'shipping' => $shipping,
                                   'shippingDescription' => $shippingDescription]); 

@@ -32,8 +32,10 @@ class PageController extends Controller
     		array_push($featuredProducts, $featuredProduct);
     		array_push($featuredProducts, $featuredProduct);
     	}
+
+
     	// return view('customer.index' , compact('featuredProducts'));
-        return response()->json(['featuredProducts' => $featuredProducts]); 
+        return response()->json(['assetBaseUrl' => asset('storage'), 'featuredProducts' => $featuredProducts]); 
     }
 
     public function collections($requestCategory)
@@ -81,7 +83,7 @@ class PageController extends Controller
         }
 
         // return view('customer.collections', compact('categories', 'products'));
-        return response()->json(['categories' => $categories, 'products' => $products]); 
+        return response()->json(['assetBaseUrl' => asset('storage'), 'categories' => $categories, 'products' => $products]); 
     }
 
     // url-nya apa gini aja ?
@@ -103,7 +105,8 @@ class PageController extends Controller
         //                                                 'assetAssignments', 'productStocks',
         //                                                 'recommendations'));
 
-        return response()->json(['category' => $category, 'product' => $product, 
+        return response()->json(['assetBaseUrl' => asset('storage'),
+        						'category' => $category, 'product' => $product, 
                                     'assetAssignments' => $assetAssignments, 'productStocks' => $productStocks , 
                                     'recommendations' => $recommendations]);  
         //return $requestCategory.'-'.$requestProduct.'-'.$category->name;
@@ -136,7 +139,8 @@ class PageController extends Controller
         $cart = new Cart($oldCart);
         // return $cart->productStocks;
         return view('customer.view-cart', ['productStocks' => $cart->productStocks, 'grandTotalPrice' => $cart->grandTotalPrice, 'currency' => $cart->currency]);
-        return response()->json(['category' => $category, 'product' => $product, 
+        return response()->json(['assetBaseUrl' => asset('storage'),
+        						'category' => $category, 'product' => $product, 
                                     'assetAssignments' => $assetAssignments, 'productStocks' => $productStocks , 
                                     'recommendations' => $recommendations]);
     }
