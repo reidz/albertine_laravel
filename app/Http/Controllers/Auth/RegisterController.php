@@ -76,7 +76,15 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        $this->validator($request->all())->validate();
+        // $this->validator($request->all())->validate();
+        $validator = $this->validator($request->all());
+
+        if($validator->fails())
+        {
+            return response()->json(['home' => url('/').$this->redirectPath(), 'message' => $validator->errors()]);
+        }
+
+
 
         $password = str_random(6);
 
@@ -85,11 +93,16 @@ class RegisterController extends Controller
         $this->guard()->login($user);
 
         Mail::send(['text'=>'mail'], ['name'=>$user['name'].' '.$user['last_name'], 'password'=>$password], function($message) use ($user){
-            $message->to($user['email'], 'To rickos89')->subject('Subject Test Nih');
+            $message->to($user['email'], 'To '.$user['name'])->subject('Welcome to Albertine');
             $message->from('rickos89.test@gmail.com', 'rickos89.test');
         });
 
-        return $this->registered($request, $user)
-                        ?: redirect($this->redirectPath());
+        // return $this->registered($request, $user)
+        //                 ?: redirect($this->redirectPath());
+
+        if($this->registered($request, $user))
+        {
+            return response()->json(['home' => url('/').$this->redirectPath()]);
+        }
     }
 }
